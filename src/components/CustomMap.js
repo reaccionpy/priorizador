@@ -1,24 +1,24 @@
 import React from "react";
 import { useEffect } from "react";
 import { Map, Marker, Popup, TileLayer, GeoJSON } from "react-leaflet";
+import { debounce } from "lodash";
+import GeoJsonGeometriesLookup from "geojson-geometries-lookup";
 
 export default function CustomMap(props) {
   const position = [-25.513475, -54.61544];
-  const [localities, setLocalities] = React.useState({
-    type: "FeatureCollection",
-    features: []
-  });
-
   const geoJsonLayer = React.createRef();
 
+  const [glookup, setGlookup] = React.useState(null);
+
   useEffect(() => {
-    fetch("alto_parana_2012_barrrios_y_localidades.geojson")
-      .then(r => r.json())
-      .then(data => {
-        geoJsonLayer.current.leafletElement.clearLayers().addData(data);
-        setLocalities(data);
-      });
-  }, [setLocalities]);
+    if (geoJsonLayer.current) {
+      //https://github.com/PaulLeCam/react-leaflet/issues/332
+      geoJsonLayer.current.leafletElement
+        .clearLayers()
+        .addData(props.localities);
+      setGlookup(new GeoJsonGeometriesLookup(props.localities));
+    }
+  }, [props.localities]);
 
   function getStyle(feature, layer) {
     return {
@@ -28,13 +28,36 @@ export default function CustomMap(props) {
     };
   }
 
+  function onMouseMove(e) {
+    const point = {
+      type: "Point",
+      coordinates: [e.latlng.lng, e.latlng.lat]
+    };
+
+    if (glookup) {
+      const result = glookup.getContainers(point);
+      const locality = result.features.length
+        ? result.features[0]
+        : {
+            properties: { barlo_desc: " " }
+          };
+      if (locality !== props.currentLocality) {
+        props.onLocalityChange(locality);
+      }
+    }
+  }
+
   return (
-    <Map center={position} zoom={12}>
+    <Map
+      center={position}
+      zoom={12}
+      onMouseMove={debounce(onMouseMove, 200, { leading: true })}
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <GeoJSON data={localities} style={getStyle} ref={geoJsonLayer} />
+      <GeoJSON data={props.localities} style={getStyle} ref={geoJsonLayer} />
       <Marker position={position}>
         <Popup>
           A pretty CSS3 popup.

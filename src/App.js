@@ -1,11 +1,30 @@
 import React from "react";
+import { useEffect } from "react";
 import "./App.css";
-import { Row, Col, Layout } from "antd";
+import { Layout } from "antd";
 import CustomHeader from "./components/CustomHeader";
 import CustomMap from "./components/CustomMap";
+import InformationPanel from "./components/InformationPanel";
 const { Header, Content } = Layout;
 
 function App() {
+  const [localities, setLocalities] = React.useState({
+    type: "FeatureCollection",
+    features: []
+  });
+
+  useEffect(() => {
+    fetch("alto_parana_2012_barrrios_y_localidades.geojson")
+      .then(r => r.json())
+      .then(data => {
+        setLocalities(data);
+      });
+  }, [setLocalities]);
+
+  const [currentLocality, setCurrentLocality] = React.useState({
+    properties: { barlo_desc: "Prueba", techo: 4, fundacion: 5, tekopora: 10 }
+  });
+
   return (
     <div className="App">
       <Header>
@@ -13,9 +32,12 @@ function App() {
       </Header>
 
       <Content>
-        <Row>
-          <CustomMap></CustomMap>
-        </Row>
+        <CustomMap
+          localities={localities}
+          locality={currentLocality}
+          onLocalityChange={setCurrentLocality}
+        ></CustomMap>
+        <InformationPanel locality={currentLocality}></InformationPanel>
       </Content>
     </div>
   );

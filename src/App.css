@@ -1,9 +1,5 @@
 @import "~antd/dist/antd.css";
 
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -42,4 +38,17 @@
 .leaflet-container {
   width: 100%;
   height: 92vh;
+}
+
+.information-panel {
+  width: 300px;
+  z-index: 1000;
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  opacity: 0.9;
+}
+
+h1 {
+  color: white;
 }
