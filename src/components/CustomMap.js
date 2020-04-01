@@ -3,12 +3,15 @@ import { useEffect } from "react";
 import { Map, TileLayer, GeoJSON } from "react-leaflet";
 import { debounce } from "lodash";
 import GeoJsonGeometriesLookup from "geojson-geometries-lookup";
+import chroma from "chroma-js";
 
 export default function CustomMap(props) {
   const position = [-25.513475, -54.61544];
   const geoJsonLayer = React.createRef();
+  const scale = chroma.scale(["khaki", "orange", "deeppink", "darkred"]);
 
   const [glookup, setGlookup] = React.useState(null);
+  const [maxColor, setMaxColor] = React.useState(null);
 
   useEffect(() => {
     if (geoJsonLayer.current) {
@@ -16,13 +19,20 @@ export default function CustomMap(props) {
       geoJsonLayer.current.leafletElement
         .clearLayers()
         .addData(props.localities);
+      setMaxColor(
+        Math.max(
+          ...props.localities.features.map(l => l.properties["tekopora"] || 0)
+        )
+      );
       setGlookup(new GeoJsonGeometriesLookup(props.localities));
     }
   }, [props.localities]);
 
   function getStyle(feature, layer) {
+    const value = feature.properties["tekopora"] || 0;
+    const color = scale(value / maxColor).hex();
     return {
-      color: "#22A9E0",
+      color: color,
       weight: 5,
       opacity: 0.65
     };

@@ -22,7 +22,7 @@ function App() {
   }, [setLocalities]);
 
   const [currentLocality, setCurrentLocality] = React.useState({
-    properties: { barlo_desc: "Prueba", techo: 4, fundacion: 5, tekopora: 10 }
+    properties: { barlo_desc: " " }
   });
 
   return (
