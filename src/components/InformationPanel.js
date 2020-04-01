@@ -12,19 +12,21 @@ export default function InformationPanel(props) {
     tekopora: n => (
       <p key="tekopora">
         <b>Tekoporã: </b>
-        {`${n} beneficiarios`}
+        {n > 1 ? `${n} beneficiarios` : `${n} beneficiario`}
       </p>
     ),
     fundacion: n => (
       <p key="fundacion">
         <b>Fundación Paraguaya: </b>
-        {`${n} familias en situación de pobreza`}
+        {n > 1
+          ? `${n} familias en situación de pobreza`
+          : `${n} familia en situación de pobreza`}
       </p>
     ),
     techo: n => (
       <p key="techo">
         <b>Techo: </b>
-        {`${n} asentamientos`}
+        {n > 1 ? `${n} asentamientos` : `${n} asentamiento`}
       </p>
     )
   };

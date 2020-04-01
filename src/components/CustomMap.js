@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { Map, Marker, Popup, TileLayer, GeoJSON } from "react-leaflet";
+import { Map, TileLayer, GeoJSON } from "react-leaflet";
 import { debounce } from "lodash";
 import GeoJsonGeometriesLookup from "geojson-geometries-lookup";
 
@@ -58,13 +58,6 @@ export default function CustomMap(props) {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
       <GeoJSON data={props.localities} style={getStyle} ref={geoJsonLayer} />
-      <Marker position={position}>
-        <Popup>
-          A pretty CSS3 popup.
-          <br />
-          Easily customizable.
-        </Popup>
-      </Marker>
     </Map>
   );
 }
