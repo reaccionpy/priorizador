@@ -1,0 +1,18 @@
+{
+    "parser": "babel-eslint",
+    "extends": ["airbnb-base", "prettier"],
+    "rules": {
+      "no-restricted-syntax": 0,
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "linebreak-style": 0
+    },
+    "globals": {
+      "localStorage": true,
+      "fetch": true
+    },
+    "env": { "browser": true, "jest": true },
+    "plugins": ["react", "react-hooks"]
+  }

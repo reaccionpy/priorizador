@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "antd": "^4.1.0",
     "chroma-js": "^2.1.0",
     "geojson-geometries-lookup": "^0.3.1",
@@ -36,5 +33,36 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/react": "^9.4.0",
+    "babel-eslint": "10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.1",
+    "typescript": "^3.7.5"
   }
 }

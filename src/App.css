@@ -1,4 +1,4 @@
-@import "~antd/dist/antd.css";
+@import '~antd/dist/antd.css';
 
 .App-logo {
   height: 40vmin;
@@ -10,7 +10,6 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
 
 .App-link {
   color: #61dafb;
@@ -60,7 +59,7 @@ html * {
 }
 
 .header-title {
-  font-size: calc(6px + 2vmin);
+  font-size: calc(8px + 2vmin);
   margin-left: 10px;
   color: white;
   flex-grow: 1;
@@ -68,6 +67,5 @@ html * {
 
 .ant-layout-header {
   padding: 0 24px;
-  background: #3fa652eb
+  background: #3fa652eb;
 }
-
