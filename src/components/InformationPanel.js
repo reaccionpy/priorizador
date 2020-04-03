@@ -46,11 +46,13 @@ export default function InformationPanel(props) {
     .filter(c => c);
 
   return (
-    <Card
-      title={props.locality.properties.barlo_desc}
-      className="information-panel"
-    >
-      {content}
-    </Card>
+    content.length && (
+      <Card
+        title={props.locality.properties.barlo_desc}
+        className="information-panel"
+      >
+        {content}
+      </Card>
+    )
   );
 }
