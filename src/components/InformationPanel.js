@@ -1,5 +1,5 @@
-import React from "react";
-import { Card } from "antd";
+import React from 'react';
+import { Card } from 'antd';
 
 export default function InformationPanel(props) {
   const contentRenderers = {
@@ -27,6 +27,12 @@ export default function InformationPanel(props) {
       <p key="techo">
         <b>Techo: </b>
         {n > 1 ? `${n} asentamientos` : `${n} asentamiento`}
+      </p>
+    ),
+    almuerzo: n => (
+      <p key="almuerzo">
+        <b>Almuerzo escolar: </b>
+        {n > 1 ? `${n} escuelas priorizadas` : `${n} escuela priorizada`}
       </p>
     )
   };

@@ -1,17 +1,16 @@
-import React from "react";
-import { useEffect } from "react";
-import { Map, TileLayer, GeoJSON } from "react-leaflet";
-import { debounce } from "lodash";
-import GeoJsonGeometriesLookup from "geojson-geometries-lookup";
-import chroma from "chroma-js";
+import React from 'react';
+import { useEffect } from 'react';
+import { Map, TileLayer, GeoJSON } from 'react-leaflet';
+import { debounce } from 'lodash';
+import GeoJsonGeometriesLookup from 'geojson-geometries-lookup';
+import chroma from 'chroma-js';
 
 export default function CustomMap(props) {
   const position = [-25.513475, -54.61544];
   const geoJsonLayer = React.createRef();
-  const scale = chroma.scale(["khaki", "orange", "deeppink", "darkred"]);
 
   const [glookup, setGlookup] = React.useState(null);
-  const [maxColor, setMaxColor] = React.useState(null);
+  const [maxColor, setMaxColor] = React.useState(1);
 
   useEffect(() => {
     if (geoJsonLayer.current) {
@@ -21,16 +20,24 @@ export default function CustomMap(props) {
         .addData(props.localities);
       setMaxColor(
         Math.max(
-          ...props.localities.features.map(l => l.properties["tekopora"] || 0)
+          ...props.localities.features.map(
+            l => l.properties[props.colorBy] || 0
+          )
         )
       );
       setGlookup(new GeoJsonGeometriesLookup(props.localities));
     }
-  }, [props.localities]);
+  }, [props.localities, props.colorBy]);
 
   function getStyle(feature, layer) {
-    const value = feature.properties["tekopora"] || 0;
-    const color = scale(value / maxColor).hex();
+    const transformByVariable = n =>
+      props.colorBy === 'tekopora' ? Math.log(n) : n;
+
+    const scale = chroma
+      .scale('RdYlBu')
+      .domain([transformByVariable(maxColor), 0]);
+    const value = feature.properties[props.colorBy] || 1;
+    const color = scale(transformByVariable(value)).hex();
     return {
       color: color,
       weight: 5,
@@ -40,7 +47,7 @@ export default function CustomMap(props) {
 
   function onMouseMove(e) {
     const point = {
-      type: "Point",
+      type: 'Point',
       coordinates: [e.latlng.lng, e.latlng.lat]
     };
 
@@ -49,7 +56,7 @@ export default function CustomMap(props) {
       const locality = result.features.length
         ? result.features[0]
         : {
-            properties: { barlo_desc: " " }
+            properties: { barlo_desc: ' ' }
           };
       if (locality !== props.currentLocality) {
         props.onLocalityChange(locality);

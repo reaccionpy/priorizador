@@ -30,7 +30,7 @@
 }
 
 .information-panel {
-  width: 300px;
+  width: calc(170px + 25vmin);
   z-index: 1000;
   position: absolute;
   top: 100px;
@@ -60,8 +60,14 @@ html * {
 
 .header-title {
   font-size: calc(8px + 2vmin);
-  margin-left: 10px;
-  color: white;
+  margin-left: 4px;
+  margin-right: 8px;
+  color: #fff;
+}
+
+.header-selector {
+  margin-left: 8px;
+  align-items: center;
   flex-grow: 1;
 }
 
