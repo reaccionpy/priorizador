@@ -1,13 +1,18 @@
-import React from "react";
-import { useEffect } from "react";
+import React, {useRef, useEffect} from 'react';
+
 import "./App.css";
-import { Layout } from "antd";
+import { Layout } from 'antd';
 import CustomHeader from "./components/CustomHeader";
 import CustomMap from "./components/CustomMap";
 import InformationPanel from "./components/InformationPanel";
 const { Header, Content } = Layout;
 
 function App() {
+  const scrollInto = useRef(null);
+  useEffect(() => {
+    scrollInto.current.scrollIntoView()
+  })
+
   const [localities, setLocalities] = React.useState({
     type: "FeatureCollection",
     features: []
@@ -26,12 +31,12 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <Header>
+    <div ref={scrollInto}>
+    <Layout style={{ minHeight: '100vh'}}>
+      <Header style={{ minheight: '8vh'}} >
         <CustomHeader></CustomHeader>
       </Header>
-
-      <Content>
+      <Content style={{ height: '92vh'}}>
         <CustomMap
           localities={localities}
           locality={currentLocality}
@@ -39,6 +44,7 @@ function App() {
         ></CustomMap>
         <InformationPanel locality={currentLocality}></InformationPanel>
       </Content>
+    </Layout>
     </div>
   );
 }
