@@ -28,6 +28,12 @@ export default function InformationPanel(props) {
         <b>Techo: </b>
         {n > 1 ? `${n} asentamientos` : `${n} asentamiento`}
       </p>
+    ),
+    almuerzo: n => (
+      <p key="almuerzo">
+        <b>Almuerzo escolar: </b>
+        {n > 1 ? `${n} escuelas priorizadas` : `${n} escuela priorizada`}
+      </p>
     )
   };
 
