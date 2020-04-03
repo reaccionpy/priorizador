@@ -8,10 +8,9 @@ import chroma from "chroma-js";
 export default function CustomMap(props) {
   const position = [-25.513475, -54.61544];
   const geoJsonLayer = React.createRef();
-  const scale = chroma.scale(["khaki", "orange", "deeppink", "darkred"]);
 
   const [glookup, setGlookup] = React.useState(null);
-  const [maxColor, setMaxColor] = React.useState(null);
+  const [maxColor, setMaxColor] = React.useState(1);
 
   useEffect(() => {
     if (geoJsonLayer.current) {
@@ -29,8 +28,9 @@ export default function CustomMap(props) {
   }, [props.localities]);
 
   function getStyle(feature, layer) {
-    const value = feature.properties["tekopora"] || 0;
-    const color = scale(value / maxColor).hex();
+    const scale = chroma.scale("RdYlBu").domain([Math.log(maxColor), 0]);
+    const value = feature.properties["tekopora"] || 1;
+    const color = scale(Math.log(value)).hex();
     return {
       color: color,
       weight: 5,
