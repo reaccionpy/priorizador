@@ -20,17 +20,24 @@ export default function CustomMap(props) {
         .addData(props.localities);
       setMaxColor(
         Math.max(
-          ...props.localities.features.map(l => l.properties["tekopora"] || 0)
+          ...props.localities.features.map(
+            l => l.properties[props.colorBy] || 0
+          )
         )
       );
       setGlookup(new GeoJsonGeometriesLookup(props.localities));
     }
-  }, [props.localities]);
+  }, [props.localities, props.colorBy]);
 
   function getStyle(feature, layer) {
-    const scale = chroma.scale("RdYlBu").domain([Math.log(maxColor), 0]);
-    const value = feature.properties["tekopora"] || 1;
-    const color = scale(Math.log(value)).hex();
+    const transformByVariable = n =>
+      props.colorBy === "tekopora" ? Math.log(n) : n;
+
+    const scale = chroma
+      .scale("RdYlBu")
+      .domain([transformByVariable(maxColor), 0]);
+    const value = feature.properties[props.colorBy] || 1;
+    const color = scale(transformByVariable(value)).hex();
     return {
       color: color,
       weight: 5,

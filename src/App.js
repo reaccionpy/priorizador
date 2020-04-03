@@ -25,10 +25,12 @@ function App() {
     properties: { barlo_desc: " " }
   });
 
+  const [colorBy, setColorBy] = React.useState("tekopora");
+
   return (
     <div className="App">
       <Header>
-        <CustomHeader></CustomHeader>
+        <CustomHeader onChange={setColorBy}></CustomHeader>
       </Header>
 
       <Content>
@@ -36,6 +38,7 @@ function App() {
           localities={localities}
           locality={currentLocality}
           onLocalityChange={setCurrentLocality}
+          colorBy={colorBy}
         ></CustomMap>
         <InformationPanel locality={currentLocality}></InformationPanel>
       </Content>
