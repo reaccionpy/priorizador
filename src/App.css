@@ -76,16 +76,20 @@ html * {
   margin-right: 8px;
   color: #fff;
   justify-self: flex-start;
-  /* flex: 1; */
 }
 
 .header-selector {
   margin-left: 8px;
   align-items: center;
-  flex-grow: 1;
+  width: 180px;
 }
 
 .ant-layout-header {
   padding: 0 24px;
   background: #3fa652eb;
+}
+
+.information-panel-selector {
+  margin-bottom: 10px;
+  width: 100%;
 }

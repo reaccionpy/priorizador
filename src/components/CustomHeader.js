@@ -1,14 +1,8 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { Select } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-
-const { Option } = Select;
+import DataSourceSelector from './DataSourceSelector';
 
 export default function CustomHeader(props) {
-  const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 768px)'
-  });
   return (
     <div className="header" style={{ maxHeight: '20vh' }}>
       <div className="header-title">Priorizador</div>
@@ -20,25 +14,19 @@ export default function CustomHeader(props) {
           <InfoCircleOutlined />
         </a>
       </div>
-      {isDesktopOrLaptop && (
+      {props.showSelector && (
         <div className="header-selector">
-          <Select
-            defaultValue="tekopora"
-            onChange={props.onChange}
-            style={{ width: 180 }}
-          >
-            <Option value="almuerzo">Almuerzo escolar</Option>
-            <Option value="fundacion">Fundación Paraguaya</Option>
-            <Option value="techo">Techo</Option>
-            <Option value="tekopora">Tekoporā</Option>
-          </Select>
+          <DataSourceSelector
+            onChange={props.onSelectorChange}
+            value={props.selectorValue}
+          />
         </div>
       )}
       <div className="header-right">
         <img
           className="header-logo"
           src={
-            isDesktopOrLaptop
+            props.showSelector
               ? 'reaccion-logo-white.svg'
               : 'isotipo-reaccion-white.svg'
           }
@@ -48,7 +36,7 @@ export default function CustomHeader(props) {
         <img
           className="header-logo"
           src={
-            isDesktopOrLaptop
+            props.showSelector
               ? 'codium-logo-white.svg'
               : 'isotipo-codium-white.svg'
           }
