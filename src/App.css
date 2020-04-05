@@ -44,14 +44,15 @@ html * {
 
 .header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
   align-items: center;
+  flex: 1;
 }
 
 .header-right {
   justify-content: flex-end;
   align-items: center;
+  flex: 1;
+  display: flex;
 }
 
 .header-logo {
@@ -63,6 +64,8 @@ html * {
   margin-left: 4px;
   margin-right: 8px;
   color: #fff;
+  justify-self: flex-start;
+  /* flex: 1; */
 }
 
 .header-selector {

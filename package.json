@@ -11,6 +11,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.6.3",
+    "react-responsive": "^8.0.3",
     "react-scripts": "3.4.1"
   },
   "scripts": {
@@ -46,8 +47,8 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/user-event": "^7.1.2",
     "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^7.1.2",
     "babel-eslint": "10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",

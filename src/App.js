@@ -5,6 +5,7 @@ import { Layout } from 'antd';
 import CustomHeader from './components/CustomHeader';
 import CustomMap from './components/CustomMap';
 import InformationPanel from './components/InformationPanel';
+
 const { Header, Content } = Layout;
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
       .then(data => {
         setLocalities(data);
       });
-  }, [setLocalities]);
+  }, []);
 
   const [currentLocality, setCurrentLocality] = React.useState({
     properties: { barlo_desc: ' ' }

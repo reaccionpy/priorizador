@@ -1,5 +1,5 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+
 import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import { debounce } from 'lodash';
 import GeoJsonGeometriesLookup from 'geojson-geometries-lookup';
@@ -7,14 +7,14 @@ import chroma from 'chroma-js';
 
 export default function CustomMap(props) {
   const position = [-25.513475, -54.61544];
-  const geoJsonLayer = React.createRef();
+  const geoJsonLayer = React.useRef();
 
   const [glookup, setGlookup] = React.useState(null);
   const [maxColor, setMaxColor] = React.useState(1);
 
   useEffect(() => {
     if (geoJsonLayer.current) {
-      //https://github.com/PaulLeCam/react-leaflet/issues/332
+      // https://github.com/PaulLeCam/react-leaflet/issues/332
       geoJsonLayer.current.leafletElement
         .clearLayers()
         .addData(props.localities);
@@ -39,7 +39,7 @@ export default function CustomMap(props) {
     const value = feature.properties[props.colorBy] || 1;
     const color = scale(transformByVariable(value)).hex();
     return {
-      color: color,
+      color,
       weight: 5,
       opacity: 0.65
     };
