@@ -59,9 +59,20 @@ html * {
   margin-right: 16px;
 }
 
+.header-info {
+  font-size: calc(8px + 2vmin);
+  margin-right: 8px;
+  margin-top: 3px;
+  color: #fff;
+}
+
+.header-info a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .header-title {
   font-size: calc(8px + 2vmin);
-  margin-left: 4px;
   margin-right: 8px;
   color: #fff;
   justify-self: flex-start;

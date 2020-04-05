@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.0.5",
     "antd": "^4.1.0",
     "chroma-js": "^2.1.0",
     "geojson-geometries-lookup": "^0.3.1",
