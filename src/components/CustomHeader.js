@@ -10,6 +10,7 @@ export default function CustomHeader(props) {
         <a
           href="https://medium.com/@d.riveros.garcia/una-propuesta-para-que-la-ayuda-covid-19-llegue-a-tantas-familias-paraguayas-como-sea-posible-8adfe1101806"
           target="_blank"
+          rel="noopener noreferrer"
         >
           <InfoCircleOutlined />
         </a>
