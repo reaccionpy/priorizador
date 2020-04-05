@@ -44,18 +44,19 @@ html * {
 
 .header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
   align-items: center;
+  flex: 1;
 }
 
 .header-right {
   justify-content: flex-end;
   align-items: center;
+  flex: 1;
+  display: flex;
 }
 
 .header-logo {
-  margin-right: 16px;
+  margin-left: 16px;
 }
 
 .header-info {
@@ -72,18 +73,23 @@ html * {
 
 .header-title {
   font-size: calc(8px + 2vmin);
-  margin-left: 4px;
   margin-right: 8px;
   color: #fff;
+  justify-self: flex-start;
 }
 
 .header-selector {
   margin-left: 8px;
   align-items: center;
-  flex-grow: 1;
+  width: 180px;
 }
 
 .ant-layout-header {
   padding: 0 24px;
   background: #3fa652eb;
+}
+
+.information-panel-selector {
+  margin-bottom: 10px;
+  width: 100%;
 }

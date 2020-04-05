@@ -1,8 +1,6 @@
 import React from 'react';
-import { Select } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-
-const { Option } = Select;
+import DataSourceSelector from './DataSourceSelector';
 
 export default function CustomHeader(props) {
   return (
@@ -12,33 +10,37 @@ export default function CustomHeader(props) {
         <a
           href="https://medium.com/@d.riveros.garcia/una-propuesta-para-que-la-ayuda-covid-19-llegue-a-tantas-familias-paraguayas-como-sea-posible-8adfe1101806"
           target="_blank"
+          rel="noopener noreferrer"
         >
           <InfoCircleOutlined />
         </a>
       </div>
-      <div className="header-selector">
-        <Select
-          defaultValue="tekopora"
-          onChange={props.onChange}
-          style={{ width: 180 }}
-        >
-          <Option value="almuerzo">Almuerzo escolar</Option>
-          <Option value="fundacion">Fundación Paraguaya</Option>
-          <Option value="techo">Techo</Option>
-          <Option value="tekopora">Tekoporā</Option>
-        </Select>
-      </div>
-
+      {props.showSelector && (
+        <div className="header-selector">
+          <DataSourceSelector
+            onChange={props.onSelectorChange}
+            value={props.selectorValue}
+          />
+        </div>
+      )}
       <div className="header-right">
         <img
           className="header-logo"
-          src="reaccion2.png"
+          src={
+            props.showSelector
+              ? 'reaccion-logo-white.svg'
+              : 'isotipo-reaccion-white.svg'
+          }
           alt="Reaccion"
-          style={{ height: 50 }}
+          style={{ height: 43 }}
         />
         <img
           className="header-logo"
-          src="codium-logo-white.svg"
+          src={
+            props.showSelector
+              ? 'codium-logo-white.svg'
+              : 'isotipo-codium-white.svg'
+          }
           alt="Codium"
           style={{ height: 38 }}
         />

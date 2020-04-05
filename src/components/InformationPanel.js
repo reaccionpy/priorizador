@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
+import DataSourceSelector from './DataSourceSelector';
 
 export default function InformationPanel(props) {
   const contentRenderers = {
@@ -44,15 +45,19 @@ export default function InformationPanel(props) {
         : null
     )
     .filter(c => c);
-
   return (
-    content.length && (
-      <Card
-        title={props.locality.properties.barlo_desc}
-        className="information-panel"
-      >
-        {content}
-      </Card>
-    )
+    <div className="information-panel">
+      {props.showSelector && (
+        <div className="information-panel-selector">
+          <DataSourceSelector
+            onChange={props.onSelectorChange}
+            value={props.selectorValue}
+          />
+        </div>
+      )}
+      {content.length && (
+        <Card title={props.locality.properties.barlo_desc}>{content}</Card>
+      )}
+    </div>
   );
 }
