@@ -37,13 +37,21 @@ export default function CustomHeader(props) {
       <div className="header-right">
         <img
           className="header-logo"
-          src="reaccion2.png"
+          src={
+            isDesktopOrLaptop
+              ? 'reaccion-logo-white.svg'
+              : 'isotipo-reaccion-white.svg'
+          }
           alt="Reaccion"
-          style={{ height: 50 }}
+          style={{ height: 43 }}
         />
         <img
           className="header-logo"
-          src="codium-logo-white.svg"
+          src={
+            isDesktopOrLaptop
+              ? 'codium-logo-white.svg'
+              : 'isotipo-codium-white.svg'
+          }
           alt="Codium"
           style={{ height: 38 }}
         />
