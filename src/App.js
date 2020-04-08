@@ -34,6 +34,8 @@ function App() {
 
   const [colorBy, setColorBy] = React.useState('tekopora');
 
+  const [district, setDistrict] = React.useState('CIUDAD DEL ESTE');
+
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 768px)'
   });
@@ -45,6 +47,8 @@ function App() {
           <CustomHeader
             onSelectorChange={setColorBy}
             selectorValue={colorBy}
+            onDistrictChange={setDistrict}
+            district={district}
             showSelector={isDesktopOrLaptop}
           ></CustomHeader>
         </Header>
@@ -52,6 +56,7 @@ function App() {
           <CustomMap
             localities={localities}
             locality={currentLocality}
+            district={district}
             onLocalityChange={setCurrentLocality}
             colorBy={colorBy}
           ></CustomMap>
@@ -59,6 +64,8 @@ function App() {
             locality={currentLocality}
             onSelectorChange={setColorBy}
             selectorValue={colorBy}
+            onDistrictChange={setDistrict}
+            district={district}
             showSelector={!isDesktopOrLaptop}
           ></InformationPanel>
         </Content>
