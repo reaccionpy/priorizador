@@ -42,12 +42,18 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 For Python=3.7
 
 To use the api you should create a virtual environment with python, install virtualenv with pip
+
 `pip install virtualenv`
+
 Then redirect yourself to the flask_api folder and create an env folder
+
 `cd flask_api/ && mkdir env`
+
 Last, create the virtual environment and install the requirements
+
 `python -m venv env && pip install -r requirements.txt`
-Download the geojson file and put it on the geojson_data folder, then execute the script.
+
+Create a folder named *geojson_data* and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script.
 `python geojson_api.py`
 
 ### Deploy with docker-compose
