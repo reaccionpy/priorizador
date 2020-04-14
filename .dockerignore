@@ -1,0 +1,12 @@
+*-lock.json
+node_modules
+docker-compose.yaml
+*.gitignore
+*.git
+*.cache
+*.md
+Dockerfile
+nginx_config
+flask_api
+build
+**/*.geojson

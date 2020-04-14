@@ -66,3 +66,26 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Using the API locally
+
+For Python=3.7
+
+To use the api you should create a virtual environment with python, install virtualenv with pip
+`pip install virtualenv`
+Then redirect yourself to the flask_api folder and create an env folder
+`cd flask_api/ && mkdir env`
+Last, create the virtual environment and install the requirements
+`python -m venv env && pip install -r requirements.txt`
+Download the geojson file and put it on the geojson_data folder, then execute the script.
+`python geojson_api.py`
+
+### Deploy with docker-compose
+
+Install docker (minimun 17.05) and docker-compose in your local environment.
+
+Execute
+`docker-compose build`
+`docker-compose up -d`
+
+For production deployment you should change the localhost and port 8080 with your port and servername in the srv/App.js file and int the nginx_config files.

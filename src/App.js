@@ -21,7 +21,7 @@ function App() {
   });
 
   useEffect(() => {
-    fetch('alto_parana_2012_barrrios_y_localidades.geojson')
+    fetch('http://localhost:8080/api/get_json?departamento=10')
       .then(r => r.json())
       .then(data => {
         setLocalities(data);

@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  flask-api:
+    build: ./flask_api
+    image: priorizador-api   
+    networks:
+      network:
+        aliases: 
+          - python-svc
+    restart: "always"
+    volumes:
+      - ./flask_api/geojson_data/:/home/geojson_data
+    environment:
+      - TEKOPORA
+      - TECHO
+      - ALMUERZO
+      - FUNDACION
+    
+  priorizador:
+    build: ./
+    image: priorizador
+    ports:
+      - "8080:8080"
+    networks:
+      network:
+        aliases: 
+          - priorizador
+    volumes:
+      - ./nginx_config/priorizador.conf:/etc/nginx/conf.d/priorizador.conf
+      - ./nginx_config/nginx.conf:/etc/nginx/nginx.conf
+    restart: "always"
+
+networks:
+  network:
