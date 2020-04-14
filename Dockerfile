@@ -1,6 +1,8 @@
 FROM node:lts-alpine AS build
 WORKDIR /html
 COPY . /html
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 RUN cd /html && yarn install && yarn build
 
 FROM nginx:1.17 AS base

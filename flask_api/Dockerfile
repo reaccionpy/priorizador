@@ -13,7 +13,7 @@ RUN chmod 0775 -R /home /var/run /var/log/
 #create a function that checks the containers health
 #Example
 HEALTHCHECK --interval=60s --timeout=20s \
-  CMD curl --silent --fail localhost:5000/triage-pti/fd/healthcheck || exit 1
+  CMD curl --silent --fail localhost:5000/reaccion/healthcheck || exit 1
 
 EXPOSE 5000
 

@@ -1,14 +1,14 @@
-version: "3.7"
+version: '3.7'
 
 services:
   flask-api:
     build: ./flask_api
-    image: priorizador-api   
+    image: priorizador-api
     networks:
       network:
-        aliases: 
+        aliases:
           - python-svc
-    restart: "always"
+    restart: 'always'
     volumes:
       - ./flask_api/geojson_data/:/home/geojson_data
     environment:
@@ -16,20 +16,23 @@ services:
       - TECHO
       - ALMUERZO
       - FUNDACION
-    
+
   priorizador:
-    build: ./
+    build:
+      context: ./
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL}
     image: priorizador
     ports:
-      - "8080:8080"
+      - '8080:8080'
     networks:
       network:
-        aliases: 
+        aliases:
           - priorizador
     volumes:
       - ./nginx_config/priorizador.conf:/etc/nginx/conf.d/priorizador.conf
       - ./nginx_config/nginx.conf:/etc/nginx/nginx.conf
-    restart: "always"
+    restart: 'always'
 
 networks:
   network:

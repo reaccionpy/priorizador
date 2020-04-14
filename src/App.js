@@ -21,7 +21,7 @@ function App() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/get_json?departamento=10')
+    fetch(process.env.REACT_APP_API_URL)
       .then(r => r.json())
       .then(data => {
         setLocalities(data);
