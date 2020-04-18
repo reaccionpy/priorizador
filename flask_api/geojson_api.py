@@ -21,7 +21,7 @@ COMPRESS_MIMETYPES = ['text/html', 'text/css', 'text/xml', 'application/json', '
 COMPRESS_LEVEL = 6
 COMPRESS_MIN_SIZE = 500
 
-ABSOLUTE_PATH = str(pathlib.Path(__file__).parent.absolute())
+GEOJSON_PATH = str(pathlib.Path(__file__).parent.absolute() / "geojson_data/paraguay_2012_barrrios_y_localidades.geojson")
 
 tekopora_key = os.getenv('TEKOPORA')
 techo_key = os.getenv('TECHO')
@@ -136,7 +136,7 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
-    with open(f"{ABSOLUTE_PATH}/geojson_data/paraguay_2012_barrrios_y_localidades.geojson", "r") as f:
+    with open(GEOJSON_PATH, "r") as f:
         shape = json.load(f)
         feature_dict = {f["properties"]["objectid"]:f 
                             for f in shape["features"] 
