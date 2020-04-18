@@ -109,3 +109,13 @@ Execute
 `docker-compose up -d`
 
 For production deployment you should change the localhost and port 8080 with your port and servername int the nginx_config files.
+
+## Contributors / Thanks
+
+- Grosip https://github.com/grosip
+- Javier Perez https://github.com/javierpf
+- Nahuel Hernandez https://github.com/nahu
+- Rodrigo Parra https://github.com/rparrapy
+- Walter Benitez https://github.com/walter-bd
+
+### Licencia MIT: [Licencia](https://github.com/reaccionpy/priorizador/blob/master/LICENSE)
