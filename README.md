@@ -2,19 +2,59 @@
 
 ## Environment variables
 
-The project is configured using environment variables. Please set this values in your shell before running any of the commands below:
+```bash
+cd priorizador
+touch .env
+touch .env.development.local
+```
 
-- **REACT_APP_API_URL**: the url where the API server is listening at, e.g. `http://localhost:8080/api/get_json?departamento=10`
-- **TEKOPORA**: the ID of the Google spreadsheet were Tekoporã data is available. Currently `1C4YS7tiQxAZ8vH4A46HpSc03xR0PVRA74itIcUdjYjQ
-- **ALMUERZO**: the ID of the Google spreadsheet were Tekoporã data is available. Currently `18NgsyLY-BVR9lQ48oDs-2tf3QeQYxSGF0ywf1aW661c`
-- **TECHO**: the ID of the Google spreadsheet were Tekoporã data is available. Currently `11jSqn_p_uXK3xHntUmjws_Eaka1ei3CNyhZ9VRpKJ-w`
-- **FUNDACION**: the ID of the Google spreadsheet were Tekoporã data is available. Currently `1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo`
+.env.development.local
+
+```bash
+REACT_APP_API_URL='http://localhost:5000/reaccion/get_json?departamento=10'
+TEKOPORA='1C4YS7tiQxAZ8vH4A46HpSc03xR0PVRA74itIcUdjYjQ'
+ALMUERZO='18NgsyLY-BVR9lQ48oDs-2tf3QeQYxSGF0ywf1aW661c'
+TECHO='11jSqn_p_uXK3xHntUmjws_Eaka1ei3CNyhZ9VRpKJ-w'
+FUNDACION='1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo'
+```
+
+.env
+
+```bash
+REACT_APP_API_URL='http://localhost:8080/api/get_json?departamento=10'
+TEKOPORA='1C4YS7tiQxAZ8vH4A46HpSc03xR0PVRA74itIcUdjYjQ'
+ALMUERZO='18NgsyLY-BVR9lQ48oDs-2tf3QeQYxSGF0ywf1aW661c'
+TECHO='11jSqn_p_uXK3xHntUmjws_Eaka1ei3CNyhZ9VRpKJ-w'
+FUNDACION='1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo'
+```
+
+For the API:
+
+```bash
+cd priorizador/flask_api
+touch .env
+```
+
+.env content
+
+```bash
+TEKOPORA='1C4YS7tiQxAZ8vH4A46HpSc03xR0PVRA74itIcUdjYjQ'
+ALMUERZO='18NgsyLY-BVR9lQ48oDs-2tf3QeQYxSGF0ywf1aW661c'
+TECHO='11jSqn_p_uXK3xHntUmjws_Eaka1ei3CNyhZ9VRpKJ-w'
+FUNDACION='1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo'
+```
 
 ## Running the frontend locally
 
+```bash
+yarn install
+```
+
 In the project directory, you can run:
 
-### `yarn start`
+```bash
+yarn start
+```
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -22,17 +62,21 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
+```bash
+yarn test
+```
 
-Launches the test runner in the interactive watch mode.<br />
+Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+```bash
+yarn build
+```
 
-Builds the app for production to the `build` folder.<br />
+Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
+The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
@@ -53,7 +97,7 @@ Last, create the virtual environment and install the requirements
 
 `python -m venv env && pip install -r requirements.txt`
 
-Create a folder named *geojson_data* and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script.
+Create a folder named _geojson_data_ and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script.
 `python geojson_api.py`
 
 ### Deploy with docker-compose

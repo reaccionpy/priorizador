@@ -14,21 +14,25 @@ import requests
 from flask import Flask, Response, abort, request
 import functools
 import os
+import pathlib
 import logging
 from flask_compress import Compress
 from flask_cors import CORS
 
-
+from dotenv import load_dotenv
+load_dotenv()
 
 COMPRESS_MIMETYPES = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
 COMPRESS_LEVEL = 6
 COMPRESS_MIN_SIZE = 500
 
+ABSOLUTE_PATH = str(pathlib.Path(__file__).parent.absolute())
 
 tekopora_key = os.getenv('TEKOPORA')
 techo_key = os.getenv('TECHO')
 almuerzo_key = os.getenv('ALMUERZO')
 fundacion_key = os.getenv('FUNDACION')
+
 compress = Compress()
 
 # create logger
@@ -137,7 +141,7 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
-    with open("./geojson_data/paraguay_2012_barrrios_y_localidades.geojson", "r") as f:
+    with open(ABSOLUTE_PATH+"/geojson_data/paraguay_2012_barrrios_y_localidades.geojson", "r") as f:
         shape = json.load(f)
         feature_dict = {f["properties"]["objectid"]:f 
                             for f in shape["features"] 
@@ -155,4 +159,4 @@ def get_json():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    app.run(host='0.0.0.0', debug=False, threaded=True)
+    app.run(host='localhost', debug=False, threaded=True)
