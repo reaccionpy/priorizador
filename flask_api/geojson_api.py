@@ -1,25 +1,20 @@
-'''
- Created on Wed Mar 20 2019
- Walter R. Benitez D.
- Copyright (c) 2019 PTI-PY
-'''
-
 import base64
+import functools
 import json
+import logging
+import os
+import pathlib
 from io import BytesIO
-from shapely import geometry
+
 import lat_lon_parser
 import pandas as pd
 import requests
+from dotenv import load_dotenv
 from flask import Flask, Response, abort, request
-import functools
-import os
-import pathlib
-import logging
 from flask_compress import Compress
 from flask_cors import CORS
+from shapely import geometry
 
-from dotenv import load_dotenv
 load_dotenv()
 
 COMPRESS_MIMETYPES = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
@@ -141,7 +136,7 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
-    with open(ABSOLUTE_PATH+"/geojson_data/paraguay_2012_barrrios_y_localidades.geojson", "r") as f:
+    with open(f"{ABSOLUTE_PATH}/geojson_data/paraguay_2012_barrrios_y_localidades.geojson", "r") as f:
         shape = json.load(f)
         feature_dict = {f["properties"]["objectid"]:f 
                             for f in shape["features"] 
