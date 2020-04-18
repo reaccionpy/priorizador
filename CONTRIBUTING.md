@@ -5,4 +5,4 @@
 3. Commit your changes: `git commit -m 'Add some feature'`
 4. Push to the branch: `git push origin username/my-new-feature`
 5. Add your name and git account to the Contributors section in this `Readme.md`
-6. Submit a pull request to `dev` branch
+6. Submit a pull request to `develop` branch
