@@ -1,0 +1,94 @@
+Example api doc for get_json endpoint
+---
+parameters:
+  - name: "departamento"
+    in: path
+    type: string
+    required: false
+responses:
+  200:
+    description: GeoJSON data
+    schema:
+      $ref: '#/definitions/GeoJSON'
+
+definitions:
+  GeoJSON:
+    type: object
+    properties:
+      type:
+        type: string
+        example: FeatureCollection
+      features:
+        $ref: '#/definitions/Features'
+  Features:
+    type: array
+    items:
+      $ref: '#/definitions/Feature'
+  Feature:
+    type: object
+    properties:
+      type: 
+        type: string
+        example: Feature
+      geometry: 
+        type: object
+        $ref: '#/definitions/Geometry'
+      properties: 
+        type: string
+        $ref: '#/definitions/Properties'
+
+  Geometry:
+    type: object
+    properties:
+      type:
+        type: string
+        example: MultiPolygon
+      coordinates:
+        type: array
+        items: []
+        example: [[[[-54.853733, -25.231389]]]]
+  Properties:
+    type: object
+    properties:
+      objectid:
+        type: integer
+        example: 29
+      dpto:
+        type: string
+        example: "10"
+      distrito:
+        type: string
+        example: "20"
+      area:
+        type: string
+        example: "6"
+      cant_viv:
+        type: integer
+        example: 10
+      cartodb_id:
+        type: integer
+        example: 29
+      dist_desc:
+        type: string
+        example: "SANTA FE DEL PARANA"
+      bar_loc:
+        type: string
+        example: "430"
+      barlo_desc:
+        type: string
+        example: "ASENT. NI\u00d1O JESUS"
+      superf:
+        type: integer
+        example: 1.08
+      updated_at:
+        type: string
+        example: "2016-03-03T20:21:16-0300"
+      dpto_desc:
+        type: string
+        example: "ALTO PARANA"
+      codigo:
+        type: string
+        example: "10206430"
+      created_at:
+        type: string
+        example: "2016-03-03T20:21:16-0300"
