@@ -97,12 +97,14 @@ Then, create the virtual environment and install the requirements
 
 `python -m venv env && pip install -r requirements.txt`
 
-Finally to run the tests use the following command and everything should be green
+Create a folder named _geojson_data_ and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, run the tests.
 
-`pytest`
+`pytest` 
 
-Create a folder named _geojson_data_ and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script.
+and then, if everything is ok, execute the script.
+
 `python geojson_api.py`
+
 
 ### Deploy with docker-compose
 
@@ -113,6 +115,15 @@ Execute
 `docker-compose up -d`
 
 For production deployment you should change the localhost and port 8080 with your port and servername int the nginx_config files.
+
+## Access the API documentation
+Easy OpenAPI specs and Swagger UI for your Flask API.
+Flasgger is a Flask extension to extract OpenAPI-Specification from all Flask views registered in your API.
+
+To open the API documentation on the browser, open the following URL.
+
+`http://localhost:5000/apidocs`
+
 
 ## Contributors / Thanks
 
