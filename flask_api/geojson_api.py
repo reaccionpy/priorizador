@@ -87,7 +87,7 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
-    with open(GEOJSON_PATH, "r", encoding="utf-8") as f:
+    with open(GEOJSON_PATH, "r", encoding = "utf8") as f:
         shape = json.load(f)
         feature_dict = {
             f["properties"]["objectid"]: f
