@@ -21,6 +21,7 @@ COMPRESS_MIMETYPES = ['text/html', 'text/css', 'text/xml', 'application/json', '
 COMPRESS_LEVEL = 6
 COMPRESS_MIN_SIZE = 500
 
+#Ruta del archivo geojson en el SO
 GEOJSON_PATH = str(pathlib.Path(__file__).parent.absolute() / "geojson_data/paraguay_2012_barrrios_y_localidades.geojson")
 
 tekopora_key = os.getenv('TEKOPORA')
