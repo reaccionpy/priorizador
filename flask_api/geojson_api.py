@@ -14,6 +14,7 @@ from flask import Flask, Response, abort, request
 from flask_compress import Compress
 from flask_cors import CORS
 from shapely import geometry
+from flasgger import Swagger, swag_from
 
 load_dotenv()
 
@@ -55,6 +56,7 @@ def start_app():
     return app
 
 app = start_app()
+swagger = Swagger(app)
 CORS(app)
 
 def google_sheets_to_df(key):
@@ -127,6 +129,7 @@ def healthcheck():
 
 # route for face detection service
 @app.route('/reaccion/get_json', methods=['GET'])
+@swag_from('./api-docs/get_json.yml')
 def get_json():
     """Getting geojson for specific region"""
     dep = request.args.get('departamento')

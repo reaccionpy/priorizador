@@ -114,6 +114,14 @@ Execute
 
 For production deployment you should change the localhost and port 8080 with your port and servername int the nginx_config files.
 
+## Access the API documentation
+Easy OpenAPI specs and Swagger UI for your Flask API.
+Flasgger is a Flask extension to extract OpenAPI-Specification from all Flask views registered in your API.
+
+To open the API documentation on the browser, open the following URL.
+
+`http://localhost:5000/apidocs`
+
 ## Contributors / Thanks
 
 - Grosip https://github.com/grosip
@@ -121,5 +129,6 @@ For production deployment you should change the localhost and port 8080 with you
 - Nahuel Hernandez https://github.com/nahu
 - Rodrigo Parra https://github.com/rparrapy
 - Walter Benitez https://github.com/walter-bd
+- Iván Cáceres https://github.com/ivanarielcaceres
 
 ### Licencia MIT: [Licencia](https://github.com/reaccionpy/priorizador/blob/master/LICENSE)
