@@ -7,4 +7,5 @@ pandas==1.0.3
 requests==2.23.0
 Shapely==1.7.0
 python-dotenv==0.12.0
+pytest==5.0.1
 black

@@ -93,9 +93,13 @@ Then redirect yourself to the flask_api folder and create an env folder
 
 `cd flask_api/ && mkdir env`
 
-Last, create the virtual environment and install the requirements
+Then, create the virtual environment and install the requirements
 
 `python -m venv env && pip install -r requirements.txt`
+
+Finally to run the tests use the following command and everything should be green
+
+`pytest`
 
 Create a folder named _geojson_data_ and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script.
 `python geojson_api.py`
