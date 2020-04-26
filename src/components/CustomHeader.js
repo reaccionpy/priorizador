@@ -29,6 +29,7 @@ export default function CustomHeader(props) {
           <DataSourceSelector
             onChange={props.onSelectorChange}
             value={props.selectorValue}
+            list={props.selectorList}
           />
         </div>
       )}
