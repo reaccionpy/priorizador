@@ -9,6 +9,13 @@ import InformationPanel from './components/InformationPanel';
 
 const { Header, Content } = Layout;
 
+const defaultSelectorList = [
+  { title: 'Tekopora', value: 'tekopora', default: true },
+  { title: 'Almuerzo escolar', value: 'almuerzo', default: false },
+  { title: 'Fundación Paraguaya', value: 'fundacion', default: false },
+  { title: 'Techo', value: 'techo', default: false }
+];
+
 function App() {
   const scrollInto = useRef(null);
   useEffect(() => {
@@ -32,6 +39,8 @@ function App() {
     properties: { barlo_desc: ' ' }
   });
 
+  const [selectorList, setSelectorList] = React.useState(defaultSelectorList);
+
   const [colorBy, setColorBy] = React.useState('tekopora');
 
   const [district, setDistrict] = React.useState('CIUDAD DEL ESTE');
@@ -40,14 +49,31 @@ function App() {
     query: '(min-width: 768px)'
   });
 
+  const onDistrictChange = value => {
+    setDistrict(value);
+    switch (value) {
+      case 'CIUDAD DEL ESTE':
+        setSelectorList(defaultSelectorList);
+        break;
+
+      default:
+        setSelectorList([
+          { title: 'Tekopora', value: 'tekopora', default: true }
+        ]);
+        setColorBy('tekopora');
+        break;
+    }
+  };
+
   return (
     <div ref={scrollInto}>
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ minheight: '8vh' }}>
           <CustomHeader
             onSelectorChange={setColorBy}
+            selectorList={selectorList}
             selectorValue={colorBy}
-            onDistrictChange={setDistrict}
+            onDistrictChange={onDistrictChange}
             district={district}
             showSelector={isDesktopOrLaptop}
           ></CustomHeader>
@@ -63,8 +89,9 @@ function App() {
           <InformationPanel
             locality={currentLocality}
             onSelectorChange={setColorBy}
+            selectorList={selectorList}
             selectorValue={colorBy}
-            onDistrictChange={setDistrict}
+            onDistrictChange={onDistrictChange}
             district={district}
             showSelector={!isDesktopOrLaptop}
           ></InformationPanel>
