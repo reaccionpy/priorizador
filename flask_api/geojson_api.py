@@ -34,11 +34,11 @@ COMPRESS_MIN_SIZE = 500
 #Ruta del archivo geojson en el SO
 GEOJSON_PATH = str(pathlib.Path(__file__).parent.absolute() / "geojson_data/paraguay_2012_barrrios_y_localidades.geojson")
 
-tekopora_key = os.getenv("TEKOPORA")
-techo_key = os.getenv("TECHO")
-almuerzo_key = os.getenv("ALMUERZO")
-fundacion_key = os.getenv("FUNDACION")
-
+tekopora_key = os.getenv('TEKOPORA')
+techo_key = os.getenv('TECHO')
+almuerzo_key = os.getenv('ALMUERZO')
+fundacion_key = os.getenv('FUNDACION')
+kobo_token = os.getenv('KOBO_API_TOKEN')
 compress = Compress()
 
 # create logger
@@ -103,7 +103,39 @@ def get_json():
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
+def kobo_to_response(kobo_entry):
+  e = collections.defaultdict(lambda: None, kobo_entry)
+  return e
+  # return {
+  #   "donacion": e["Favor_indique_cu_nto_limentos_v_veres_don"],
+  #   "referencia": e["Favor_indique_el_nom_so_alguna_referencia"],
+  #   "nro_familias": e["Favor_indicar_la_can_e_la_familia_ayudada"],
+  #   "organizacion": e["Organizacion_Grupo"],
+  #   "tipo_ayuda": e["Tipo_de_ayuda"],
+  #   "latitud": e["_geolocation"][0],
+  #   "longitud": e["_geolocation"][1]
+  # }
+
+def from_last_week(kobo_entry):
+  d = datetime.datetime.strptime(kobo_entry["_submission_time"], "%Y-%m-%dT%H:%M:%S")
+  now = datetime.datetime.now()
+  delta = d - now
+  return delta.days < 7
+
+
+
+@app.route('/reaccion/get_kobo_submissions', methods=['GET'])
+def get_kobo_submissions():
+  """Get reports from Kobo API"""
+  headers = {"Authorization": f"Token {kobo_token}"}
+  kobo_response = requests.get("https://kobo.humanitarianresponse.info/assets/aUGdJQeUkMGKQSsBk2XyKT/submissions?format=json", headers=headers)
+  kobo_submissions = [kobo_to_response(s) for s in json.loads(kobo_response.text) if from_last_week(s)]
+
+  return Response(
+        response=json.dumps(kobo_submissions), status=200, mimetype="application/json")
+
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    app.run(host="localhost", debug=False, threaded=True)
+    app.run(host='0.0.0.0', debug=False, threaded=True)
