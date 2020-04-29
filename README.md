@@ -11,7 +11,7 @@ touch .env.development.local
 .env.development.local
 
 ```bash
-REACT_APP_API_URL='http://localhost:5000/reaccion/get_json?departamento=10'
+REACT_APP_API_URL='http://localhost:5000/reaccion'
 TEKOPORA='1C4YS7tiQxAZ8vH4A46HpSc03xR0PVRA74itIcUdjYjQ'
 ALMUERZO='18NgsyLY-BVR9lQ48oDs-2tf3QeQYxSGF0ywf1aW661c'
 TECHO='11jSqn_p_uXK3xHntUmjws_Eaka1ei3CNyhZ9VRpKJ-w'
@@ -21,7 +21,7 @@ FUNDACION='1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo'
 .env
 
 ```bash
-REACT_APP_API_URL='http://localhost:8080/api/get_json?departamento=10'
+REACT_APP_API_URL='http://localhost:8080/api'
 TEKOPORA='1C4YS7tiQxAZ8vH4A46HpSc03xR0PVRA74itIcUdjYjQ'
 ALMUERZO='18NgsyLY-BVR9lQ48oDs-2tf3QeQYxSGF0ywf1aW661c'
 TECHO='11jSqn_p_uXK3xHntUmjws_Eaka1ei3CNyhZ9VRpKJ-w'

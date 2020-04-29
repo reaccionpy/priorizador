@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Map, TileLayer, GeoJSON } from 'react-leaflet';
+import { Map, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import { debounce } from 'lodash';
 import GeoJsonGeometriesLookup from 'geojson-geometries-lookup';
 import chroma from 'chroma-js';
@@ -83,6 +83,29 @@ export default function CustomMap(props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
+      {props.koboEntries.map((value, index) => {
+        return (
+          <Marker key={index} position={value.coordinates}>
+            <Popup>
+              {value.organizacion && (
+                <p>
+                  <strong>Organización:</strong> {value.organizacion}
+                </p>
+              )}
+              {value.nro_familias && (
+                <p>
+                  <strong>Número de familias:</strong> {value.nro_familias}
+                </p>
+              )}
+              {value.tipo_ayuda && (
+                <p>
+                  <strong>Tipo de ayuda:</strong> {value.tipo_ayuda}
+                </p>
+              )}
+            </Popup>
+          </Marker>
+        );
+      })}
       <GeoJSON data={props.localities} style={getStyle} ref={geoJsonLayer} />
     </Map>
   );

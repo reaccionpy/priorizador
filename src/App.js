@@ -29,6 +29,7 @@ function App() {
   });
   const [colorBy, setColorBy] = useState('tekopora');
   const [district, setDistrict] = useState('CIUDAD DEL ESTE');
+  const [koboEntries, setKoboEntries] = useState([]);
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 768px)'
@@ -39,10 +40,18 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_URL)
+    fetch(`${process.env.REACT_APP_API_URL}/get_json?departamento=10`)
       .then(r => r.json())
       .then(data => {
         setLocalities(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/get_kobo_submissions`)
+      .then(r => r.json())
+      .then(data => {
+        setKoboEntries(data);
       });
   }, []);
 
@@ -105,6 +114,7 @@ function App() {
             district={district}
             onLocalityChange={setCurrentLocality}
             colorBy={colorBy}
+            koboEntries={koboEntries}
           ></CustomMap>
           <InformationPanel
             locality={currentLocality}
