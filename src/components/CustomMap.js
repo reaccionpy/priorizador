@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Map, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import { debounce } from 'lodash';
@@ -6,7 +6,8 @@ import GeoJsonGeometriesLookup from 'geojson-geometries-lookup';
 import chroma from 'chroma-js';
 
 export default function CustomMap(props) {
-  const position = [-25.513475, -54.61544];
+  const [position, setPosition] = useState([-25.513475, -54.61544]);
+
   const geoJsonLayer = React.useRef();
 
   const [glookup, setGlookup] = React.useState(null);
@@ -30,6 +31,16 @@ export default function CustomMap(props) {
       setGlookup(new GeoJsonGeometriesLookup(props.localities));
     }
   }, [props.localities, props.colorBy, props.district]);
+
+  useEffect(() => {
+    const districtPositionMap = {
+      'CIUDAD DEL ESTE': [-25.513475, -54.61544],
+      HERNANDARIAS: [-25.40944, -54.63819],
+      'MINGA GUAZU': [-25.48881, -54.80826],
+      'PRESIDENTE FRANCO': [-25.57439, -54.60375]
+    };
+    setPosition(districtPositionMap[props.district]);
+  }, [props.district]);
 
   function getStyle(feature, layer) {
     const transformByVariable = n =>
