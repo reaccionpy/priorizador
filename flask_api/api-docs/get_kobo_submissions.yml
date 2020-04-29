@@ -1,0 +1,34 @@
+Example api doc for get_kobo_submissions endpoint
+---
+responses:
+  200:
+    description: Kobotoolbox form data
+    schema:
+    $ref: '#/definitions/KoboData'
+
+definitions:
+  KoboData:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 91255297
+      donacion:
+        type: string
+        example: '100 kits de alimentos'
+      referencia:
+        type: string
+        example: 'Barrio San Agustín'
+      nro_familias:
+        type: integer
+        example: 5
+      organizacion:
+        type: string
+        example: 'Red Solidaria de Kuña Poty'
+      tipo_ayuda:
+        type: string
+        example: 'kits'
+      coordinates:
+        type: array
+        items: []
+        example: [[[[-54.853733, -25.231389]]]]

@@ -1,8 +1,11 @@
+import collections
+import datetime
+import json
+from io import BytesIO
+
 import lat_lon_parser
 import pandas as pd
 import requests
-
-from io import BytesIO
 from shapely import geometry
 
 
@@ -66,3 +69,55 @@ def add_properties_almuerzo(features, df):
                 feature["properties"]["almuerzo"] += 1
             seen.add(row._4)
     return features
+
+
+def kobo_to_response(kobo_entry):
+    e = collections.defaultdict(lambda: None, kobo_entry)
+    return {
+        "id": e["_id"],
+        "donacion": e["Favor_indique_cu_nto_limentos_v_veres_don"],
+        "referencia": e["Favor_indique_el_nom_so_alguna_referencia"],
+        "nro_familias": e["Favor_indicar_la_can_e_la_familia_ayudada"],
+        "organizacion": e["Organizacion_Grupo"],
+        "tipo_ayuda": e["Tipo_de_ayuda"],
+    }
+
+
+def kobo_volunteer_to_response(kobo_entry):
+    e = collections.defaultdict(lambda: None, kobo_entry)
+    return {"id": e["ID"], "coordinates": e["_geolocation"]}
+
+
+def from_last_week(kobo_entry):
+    d = datetime.datetime.strptime(kobo_entry["_submission_time"], "%Y-%m-%dT%H:%M:%S")
+    now = datetime.datetime.now()
+    delta = d - now
+    return delta.days < 7
+
+
+def get_kobo_data(token):
+    headers = {"Authorization": f"Token {token}"}
+    kobo_response = requests.get(
+        "https://kobo.humanitarianresponse.info/assets/aUGdJQeUkMGKQSsBk2XyKT/submissions?format=json",
+        headers=headers,
+    )
+
+    kobo_submissions = [
+        kobo_to_response(s) for s in json.loads(kobo_response.text) if from_last_week(s)
+    ]
+
+    kobo_volunteer_response = requests.get(
+        "https://kobo.humanitarianresponse.info/assets/aDpeBqS6AvaFUUaP2856Fw/submissions?format=json",
+        headers=headers,
+    )
+
+    kobo_volunteer_submissions = [
+        kobo_volunteer_to_response(s)
+        for s in json.loads(kobo_volunteer_response.text)
+        if not None in s["_geolocation"]
+    ]
+
+    main_df = pd.DataFrame(kobo_submissions)
+    volunteer_df = pd.DataFrame(kobo_volunteer_submissions)
+    volunteer_df["id"] = volunteer_df["id"].astype("int64")
+    return main_df.merge(volunteer_df, on="id")
