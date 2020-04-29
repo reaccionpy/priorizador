@@ -84,6 +84,7 @@ def healthcheck():
 def get_json():
     """Getting geojson for specific region"""
     dep = request.args.get("departamento")
+    distritos = ["01", "02", "05", "11"]
     if dep is None:
         dep = "10"
     tekopora_df = google_sheets_to_df(tekopora_key)
@@ -96,6 +97,7 @@ def get_json():
             f["properties"]["objectid"]: f
             for f in shape["features"]
             if f["properties"]["dpto"] == dep
+            and f["properties"]["distrito"] in distritos
         }
         features = add_properties_tekopora(feature_dict, tekopora_df)
         features = add_properties_techo(features, techo_df)
