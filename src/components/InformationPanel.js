@@ -61,6 +61,7 @@ export default function InformationPanel(props) {
           <DataSourceSelector
             onChange={props.onSelectorChange}
             value={props.selectorValue}
+            list={props.selectorList}
           />
         </div>
       )}

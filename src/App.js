@@ -120,6 +120,7 @@ function App() {
             locality={currentLocality}
             onSelectorChange={setColorBy}
             selectorValue={colorBy}
+            selectorList={selectorList}
             onDistrictChange={setDistrict}
             district={district}
             showSelector={!isDesktopOrLaptop}
