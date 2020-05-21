@@ -16,6 +16,8 @@ services:
       - TECHO
       - ALMUERZO
       - FUNDACION
+      - KOBO_TOKEN
+      - CESTAS
 
   priorizador:
     build:

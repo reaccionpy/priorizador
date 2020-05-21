@@ -16,6 +16,11 @@ const defaultSelectorList = [
   { title: 'Techo', value: 'techo', default: false }
 ];
 
+const defaultHelpSourceList = [
+  { title: 'Pintá con tu ayuda', value: 'kobo', default: true },
+  { title: 'Cestas básicas MCDE', value: 'cestas', default: false }
+];
+
 function App() {
   const scrollInto = useRef(null);
 
@@ -29,7 +34,10 @@ function App() {
   });
   const [colorBy, setColorBy] = useState('tekopora');
   const [district, setDistrict] = useState('CIUDAD DEL ESTE');
+
+  const [markersBy, setMarkersBy] = useState('kobo');
   const [koboEntries, setKoboEntries] = useState([]);
+  const [cestasEntries, setCestasEntries] = useState([]);
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 768px)'
@@ -52,6 +60,14 @@ function App() {
       .then(r => r.json())
       .then(data => {
         setKoboEntries(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/get_cestas_submissions`)
+      .then(r => r.json())
+      .then(data => {
+        setCestasEntries(data);
       });
   }, []);
 
@@ -105,6 +121,9 @@ function App() {
             onDistrictChange={setDistrict}
             district={district}
             showSelector={isDesktopOrLaptop}
+            helpSourceList={defaultHelpSourceList}
+            onHelpSourceChange={setMarkersBy}
+            helpSourceValue={markersBy}
           ></CustomHeader>
         </Header>
         <Content style={{ height: '92vh' }}>
@@ -114,7 +133,9 @@ function App() {
             district={district}
             onLocalityChange={setCurrentLocality}
             colorBy={colorBy}
+            markersBy={markersBy}
             koboEntries={koboEntries}
+            cestasEntries={cestasEntries}
           ></CustomMap>
           <InformationPanel
             locality={currentLocality}
@@ -124,6 +145,9 @@ function App() {
             onDistrictChange={setDistrict}
             district={district}
             showSelector={!isDesktopOrLaptop}
+            helpSourceList={defaultHelpSourceList}
+            onHelpSourceChange={setMarkersBy}
+            helpSourceValue={markersBy}
           ></InformationPanel>
         </Content>
       </Layout>

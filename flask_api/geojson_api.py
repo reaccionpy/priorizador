@@ -40,6 +40,7 @@ tekopora_key = os.getenv("TEKOPORA")
 techo_key = os.getenv("TECHO")
 almuerzo_key = os.getenv("ALMUERZO")
 fundacion_key = os.getenv("FUNDACION")
+cestas_key = os.getenv("CESTAS")
 kobo_token = os.getenv("KOBO_API_TOKEN")
 compress = Compress()
 
@@ -115,6 +116,28 @@ def get_kobo_submissions():
     data = get_kobo_data(kobo_token)
     return Response(
         response=data.to_json(orient="records"), status=200, mimetype="application/json"
+    )
+
+
+@app.route("/reaccion/get_cestas_submissions", methods=["GET"])
+@swag_from("./api-docs/get_cestas_submissions.yml")
+def get_cestas_submissions():
+    data = google_sheets_to_df(cestas_key)
+    features = [
+        {
+            "type": "Feature",
+            "properties": {
+                "nombre_apellido": d.nombre_apellido,
+                "nro_ci": d.nro_ci,
+                "nro_telefono": d.nro_telefono,
+            },
+            "geometry": {"type": "Point", "coordinates": [d.longitud, d.latitud],},
+        }
+        for d in data.itertuples()
+    ]
+    geojson = {"type": "FeatureCollection", "features": features}
+    return Response(
+        response=json.dumps(geojson), status=200, mimetype="application/json"
     )
 
 

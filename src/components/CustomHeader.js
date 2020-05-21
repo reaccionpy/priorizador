@@ -34,6 +34,16 @@ export default function CustomHeader(props) {
         </div>
       )}
 
+      {props.showSelector && (
+        <div className="header-selector">
+          <DataSourceSelector
+            onChange={props.onHelpSourceChange}
+            value={props.helpSourceValue}
+            list={props.helpSourceList}
+          />
+        </div>
+      )}
+
       <div className="header-right">
         <img
           className="header-logo"

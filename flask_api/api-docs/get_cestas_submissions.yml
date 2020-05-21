@@ -1,0 +1,56 @@
+Example api doc for get_kobo_submissions endpoint
+---
+responses:
+  200:
+    description: Kobotoolbox form data
+    schema:
+    $ref: '#/definitions/CestasData'
+
+definitions:
+  GeoJSON:
+    type: object
+    properties:
+      type:
+        type: string
+        example: FeatureCollection
+      features:
+        $ref: '#/definitions/Features'
+  Features:
+    type: array
+    items:
+    $ref: '#/definitions/Feature'
+  Feature:
+    type: object
+    properties:
+      type:
+        type: string
+        example: Feature
+      geometry:
+        type: object
+        $ref: '#/definitions/Geometry'
+      properties:
+        type: string
+        $ref: '#/definitions/Properties'
+
+  Geometry:
+    type: object
+    properties:
+      type:
+        type: string
+        example: MultiPolygon
+      coordinates:
+        type: array
+        items: []
+        example: [[[[-54.853733, -25.231389]]]]
+  Properties:
+    type: object
+    properties:
+      nombre_apellido:
+        type: string
+        example: 'Juan Perez'
+      nro_ci:
+        type: integer
+        example: 3543221
+      nro_telefono:
+        type: integer
+        example: 981111111

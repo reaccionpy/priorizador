@@ -168,5 +168,9 @@ cython_debug/
 # Direnv file
 .envrc
 
-#Text editor files
+# Text editor files
 .vscode/
+
+# Paw files
+*.paw
+

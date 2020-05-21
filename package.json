@@ -13,7 +13,9 @@
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.6.3",
     "react-responsive": "^8.0.3",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "supercluster": "^7.0.0",
+    "use-supercluster": "^0.2.8"
   },
   "scripts": {
     "start": "react-scripts start",

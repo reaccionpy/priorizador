@@ -65,6 +65,15 @@ export default function InformationPanel(props) {
           />
         </div>
       )}
+      {props.showSelector && (
+        <div className="information-panel-selector">
+          <DataSourceSelector
+            onChange={props.onHelpSourceChange}
+            value={props.helpSourceValue}
+            list={props.helpSourceList}
+          />
+        </div>
+      )}
 
       {content.length && (
         <Card title={props.locality.properties.barlo_desc}>{content}</Card>
