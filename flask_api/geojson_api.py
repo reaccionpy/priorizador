@@ -16,6 +16,8 @@ from utils import (
     add_properties_tekopora,
     get_kobo_data,
     google_sheets_to_df,
+    get_df_from_ckan,
+    add_properties_ande,
 )
 
 load_dotenv()
@@ -42,6 +44,7 @@ almuerzo_key = os.getenv("ALMUERZO")
 fundacion_key = os.getenv("FUNDACION")
 cestas_key = os.getenv("CESTAS")
 kobo_token = os.getenv("KOBO_API_TOKEN")
+ande_path = os.getenv("ANDE_PATH")
 compress = Compress()
 
 # create logger
@@ -92,6 +95,7 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
+    ande_df = get_df_from_ckan(ande_path)
     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
         shape = json.load(f)
         feature_dict = {
@@ -104,6 +108,7 @@ def get_json():
         features = add_properties_techo(features, techo_df)
         features = add_properties_fundacion(features, fundacion_df)
         features = add_properties_almuerzo(features, almuerzo_df)
+        features = add_properties_ande(features, ande_df)
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")

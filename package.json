@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.0.5",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "antd": "^4.1.0",
     "chroma-js": "^2.1.0",
     "geojson-geometries-lookup": "^0.3.1",
@@ -12,8 +15,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.6.3",
+    "react-leaflet-sidebarv2": "^0.6.0",
     "react-responsive": "^8.0.3",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "supercluster": "^7.0.0",
     "use-supercluster": "^0.2.8"
   },

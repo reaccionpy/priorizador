@@ -18,6 +18,7 @@ services:
       - FUNDACION
       - KOBO_TOKEN
       - CESTAS
+      - ANDE_PATH
 
   priorizador:
     build:

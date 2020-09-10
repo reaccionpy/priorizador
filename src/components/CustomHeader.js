@@ -1,7 +1,7 @@
 import React from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import DataSourceSelector from './DataSourceSelector';
-import DistrictSelector from './DistrictSelector';
+// import DataSourceSelector from './DataSourceSelector';
+// import DistrictSelector from './DistrictSelector';
 
 export default function CustomHeader(props) {
   return (
@@ -16,6 +16,7 @@ export default function CustomHeader(props) {
           <InfoCircleOutlined />
         </a>
       </div>
+      {/*
       {props.showSelector && (
         <div className="header-selector">
           <DistrictSelector
@@ -43,7 +44,7 @@ export default function CustomHeader(props) {
           />
         </div>
       )}
-
+      */}
       <div className="header-right">
         <img
           className="header-logo"

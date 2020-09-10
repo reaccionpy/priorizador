@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
-import DataSourceSelector from './DataSourceSelector';
-import DistrictSelector from './DistrictSelector';
+// import DataSourceSelector from './DataSourceSelector';
+// import DistrictSelector from './DistrictSelector';
 
 export default function InformationPanel(props) {
   const contentRenderers = {
@@ -36,6 +36,12 @@ export default function InformationPanel(props) {
         <b>Almuerzo escolar: </b>
         {n > 1 ? `${n} escuelas priorizadas` : `${n} escuela priorizada`}
       </p>
+    ),
+    ande: n => (
+      <p key="ande">
+        <b>Tarifa social ANDE: </b>
+        {n > 1 ? `${n} beneficiados` : `${n} beneficiado`}
+      </p>
     )
   };
 
@@ -48,6 +54,7 @@ export default function InformationPanel(props) {
     .filter(c => c);
   return (
     <div className="information-panel">
+      {/*
       {props.showSelector && (
         <div className="information-panel-selector">
           <DistrictSelector
@@ -74,8 +81,8 @@ export default function InformationPanel(props) {
           />
         </div>
       )}
-
-      {content.length && (
+      */}
+      {content && content.length > 0 && (
         <Card title={props.locality.properties.barlo_desc}>{content}</Card>
       )}
     </div>
