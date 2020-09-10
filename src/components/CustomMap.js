@@ -171,14 +171,14 @@ export default function CustomMap(props) {
         >
           <div>
             <div>
-              <FontAwesomeIcon icon={faMap} /> Distrito
+              <FontAwesomeIcon icon={faMap} /> Distrito <br></br>
               <DistrictSelector
                 onChange={props.onDistrictChange}
                 value={props.district}
               />
             </div>
             <div>
-              <FontAwesomeIcon icon={faDrawPolygon} /> Subsidio
+              <FontAwesomeIcon icon={faDrawPolygon} /> Subsidio <br></br>
               <DataSourceSelector
                 onChange={props.onSelectorChange}
                 value={props.selectorValue}
@@ -186,7 +186,8 @@ export default function CustomMap(props) {
               />
             </div>
             <div>
-              <FontAwesomeIcon icon={faMapMarkerAlt} /> Ayuda entregada
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> Ayuda entregada{' '}
+              <br></br>
               <DataSourceSelector
                 onChange={props.onHelpSourceChange}
                 value={props.helpSourceValue}

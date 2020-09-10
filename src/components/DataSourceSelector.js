@@ -13,10 +13,10 @@ const renderOption = it => {
 
 const DataSourceSelector = ({ onChange, value, list }) => (
   <Select
+    className="filter-select"
     defaultValue="tekopora"
     value={value}
     onChange={onChange}
-    style={{ width: '100%' }}
   >
     {list.map(renderOption)}
   </Select>

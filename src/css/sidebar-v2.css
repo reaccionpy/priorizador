@@ -19,24 +19,38 @@
   left: 71%;
 }
 
+.filter-select {
+  width: 100%;
+}
+
 @media (min-width: 768px) and (max-width: 991px) {
   .sidebar {
-    width: 305px;
+    width: 260px;
   }
   .sidebar-pane {
     min-width: 265px;
+  }
+  .filter-select {
+    width: 80%;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
   .sidebar {
-    width: 390px;
+    width: 300px;
+  }
+  .filter-select {
+    width: 60%;
   }
 }
 
 @media (min-width: 1200px) {
   .sidebar {
-    width: 460px;
+    width: 300px;
+  }
+
+  .filter-select {
+    width: 50%;
   }
 }
 
@@ -242,7 +256,7 @@
 
 @media (min-width: 768px) and (max-width: 991px) {
   .sidebar-left ~ .sidebar-map .leaflet-left {
-    left: 315px;
+    left: 270px;
   }
   .sidebar-right ~ .sidebar-map .leaflet-right {
     right: 315px;
@@ -254,7 +268,7 @@
     min-width: 350px;
   }
   .sidebar-left ~ .sidebar-map .leaflet-left {
-    left: 400px;
+    left: 310px;
   }
   .sidebar-right ~ .sidebar-map .leaflet-right {
     right: 400px;
@@ -266,7 +280,7 @@
     min-width: 420px;
   }
   .sidebar-left ~ .sidebar-map .leaflet-left {
-    left: 470px;
+    left: 310px;
   }
   .sidebar-right ~ .sidebar-map .leaflet-right {
     right: 470px;
