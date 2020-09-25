@@ -6,6 +6,19 @@ import GeoJsonGeometriesLookup from 'geojson-geometries-lookup';
 import chroma from 'chroma-js';
 import useSupercluster from 'use-supercluster';
 import L from 'leaflet';
+import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
+import '../css/sidebar-v2.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFilter,
+  faTimes,
+  faPalette,
+  faMapMarkerAlt,
+  faDrawPolygon,
+  faMap
+} from '@fortawesome/free-solid-svg-icons';
+import DataSourceSelector from './DataSourceSelector';
+import DistrictSelector from './DistrictSelector';
 
 const icons = {};
 
@@ -129,103 +142,173 @@ export default function CustomMap(props) {
     }
   }
 
+  const [collapsed, setCollapsed] = useState(false);
+  const [selected, setSelected] = useState('home');
+
+  const onClose = () => {
+    setCollapsed(true);
+  };
+
+  const onOpen = id => {
+    setCollapsed(false);
+    setSelected(id);
+  };
+
   return (
-    <Map
-      center={position}
-      zoom={12}
-      onMouseMove={debounce(onMouseMove, 200, { leading: true })}
-      onMoveEnd={updateMap}
-      ref={mapRef}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {props.markersBy === 'kobo' &&
-        props.koboEntries.map((value, index) => {
-          return (
-            <Marker key={`kobo-${index}`} position={value.coordinates}>
-              <Popup>
-                {value.organizacion && (
-                  <p>
-                    <strong>Organización:</strong> {value.organizacion}
-                  </p>
-                )}
-                {value.nro_familias && (
-                  <p>
-                    <strong>Número de familias:</strong> {value.nro_familias}
-                  </p>
-                )}
-                {value.tipo_ayuda && (
-                  <p>
-                    <strong>Tipo de ayuda:</strong> {value.tipo_ayuda}
-                  </p>
-                )}
-              </Popup>
-            </Marker>
-          );
-        })}
-      {props.markersBy === 'cestas' &&
-        clusters.map((cluster, index) => {
-          // every cluster point has coordinates
-          const [longitude, latitude] = cluster.geometry.coordinates;
-          // the point may be either a cluster or a crime point
-          const {
-            cluster: isCluster,
-            point_count: pointCount
-          } = cluster.properties;
-
-          // we have a cluster to render
-          if (isCluster) {
-            return (
-              <Marker
-                key={`cluster-${cluster.id}`}
-                position={[latitude, longitude]}
-                icon={fetchIcon(pointCount)}
-                onClick={() => {
-                  const expansionZoom = Math.min(
-                    supercluster.getClusterExpansionZoom(cluster.id),
-                    17
-                  );
-                  const leaflet = mapRef.current.leafletElement;
-                  leaflet.setView([latitude, longitude], expansionZoom, {
-                    animate: true
-                  });
-                }}
+    <>
+      <Sidebar
+        id="sidebar"
+        collapsed={collapsed}
+        selected={selected}
+        onOpen={onOpen.bind(this)}
+        onClose={onClose.bind(this)}
+        closeIcon={<FontAwesomeIcon icon={faTimes} />}
+      >
+        <Tab
+          id="home"
+          header="Filtrar"
+          icon={<FontAwesomeIcon icon={faFilter} />}
+        >
+          <div>
+            <div>
+              <FontAwesomeIcon icon={faMap} /> Distrito <br></br>
+              <DistrictSelector
+                onChange={props.onDistrictChange}
+                value={props.district}
               />
-            );
-          }
+            </div>
+            <div>
+              <FontAwesomeIcon icon={faDrawPolygon} /> Subsidio <br></br>
+              <DataSourceSelector
+                onChange={props.onSelectorChange}
+                value={props.selectorValue}
+                list={props.selectorList}
+              />
+            </div>
+            <div>
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> Ayuda entregada{' '}
+              <br></br>
+              <DataSourceSelector
+                onChange={props.onHelpSourceChange}
+                value={props.helpSourceValue}
+                list={props.helpSourceList}
+              />
+            </div>
+          </div>
+        </Tab>
 
-          // we have a single point to render
-          const {
-            nombre_apellido: nombre,
-            nro_ci: cedula,
-            nro_telefono: telefono
-          } = cluster.properties;
-          return (
-            <Marker key={index} position={[latitude, longitude]}>
-              <Popup>
-                {nombre && (
-                  <p>
-                    <strong>Nombre:</strong> {nombre}
-                  </p>
-                )}
-                {cedula && (
-                  <p>
-                    <strong>CI:</strong> {cedula.toLocaleString('es')}
-                  </p>
-                )}
-                {telefono && (
-                  <p>
-                    <strong>Teléfono:</strong> {telefono}
-                  </p>
-                )}
-              </Popup>
-            </Marker>
-          );
-        })}
-      }
-      <GeoJSON data={props.localities} style={getStyle} ref={geoJsonLayer} />
-    </Map>
+        <Tab
+          id="settings"
+          header="Escala de colores"
+          icon={<FontAwesomeIcon icon={faPalette} />}
+          anchor="bottom"
+        >
+          <div className="sidebar-map-content">
+            <p>
+              Sección para la escala/peso de los colores de los polígonos que se
+              muestran en el mapa
+            </p>
+          </div>
+        </Tab>
+      </Sidebar>
+      <Map
+        className="sidebar-map"
+        center={position}
+        zoom={12}
+        onMouseMove={debounce(onMouseMove, 200, { leading: true })}
+        onMoveEnd={updateMap}
+        ref={mapRef}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {props.markersBy === 'kobo' &&
+          props.koboEntries.map((value, index) => {
+            return (
+              <Marker key={`kobo-${index}`} position={value.coordinates}>
+                <Popup>
+                  {value.organizacion && (
+                    <p>
+                      <strong>Organización:</strong> {value.organizacion}
+                    </p>
+                  )}
+                  {value.nro_familias && (
+                    <p>
+                      <strong>Número de familias:</strong> {value.nro_familias}
+                    </p>
+                  )}
+                  {value.tipo_ayuda && (
+                    <p>
+                      <strong>Tipo de ayuda:</strong> {value.tipo_ayuda}
+                    </p>
+                  )}
+                </Popup>
+              </Marker>
+            );
+          })}
+        {props.markersBy === 'cestas' &&
+          clusters.map((cluster, index) => {
+            // every cluster point has coordinates
+            const [longitude, latitude] = cluster.geometry.coordinates;
+            // the point may be either a cluster or a crime point
+            const {
+              cluster: isCluster,
+              point_count: pointCount
+            } = cluster.properties;
+
+            // we have a cluster to render
+            if (isCluster) {
+              return (
+                <Marker
+                  key={`cluster-${cluster.id}`}
+                  position={[latitude, longitude]}
+                  icon={fetchIcon(pointCount)}
+                  onClick={() => {
+                    const expansionZoom = Math.min(
+                      supercluster.getClusterExpansionZoom(cluster.id),
+                      17
+                    );
+                    const leaflet = mapRef.current.leafletElement;
+                    leaflet.setView([latitude, longitude], expansionZoom, {
+                      animate: true
+                    });
+                  }}
+                />
+              );
+            }
+
+            // we have a single point to render
+            const {
+              nombre_apellido: nombre,
+              nro_ci: cedula,
+              nro_telefono: telefono
+            } = cluster.properties;
+            return (
+              <Marker key={index} position={[latitude, longitude]}>
+                <Popup>
+                  {nombre && (
+                    <p>
+                      <strong>Nombre:</strong> {nombre}
+                    </p>
+                  )}
+                  {cedula && (
+                    <p>
+                      <strong>CI:</strong> {cedula.toLocaleString('es')}
+                    </p>
+                  )}
+                  {telefono && (
+                    <p>
+                      <strong>Teléfono:</strong> {telefono}
+                    </p>
+                  )}
+                </Popup>
+              </Marker>
+            );
+          })}
+        }
+        <GeoJSON data={props.localities} style={getStyle} ref={geoJsonLayer} />
+      </Map>
+    </>
   );
 }

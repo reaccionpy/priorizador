@@ -13,7 +13,8 @@ const defaultSelectorList = [
   { title: 'Tekopora', value: 'tekopora', default: true },
   { title: 'Almuerzo escolar', value: 'almuerzo', default: false },
   { title: 'Fundación Paraguaya', value: 'fundacion', default: false },
-  { title: 'Techo', value: 'techo', default: false }
+  { title: 'Techo', value: 'techo', default: false },
+  { title: 'Tarifa social ANDE', value: 'ande', default: false }
 ];
 
 const defaultHelpSourceList = [
@@ -78,6 +79,7 @@ function App() {
     let techoFound = false;
     let almuerzoFound = false;
     let fundacionFound = false;
+    let andeFound = false;
 
     localitiesByDistrict.forEach(locality => {
       if (locality.properties.techo) {
@@ -88,6 +90,9 @@ function App() {
       }
       if (locality.properties.fundacion) {
         fundacionFound = true;
+      }
+      if (locality.properties.ande) {
+        andeFound = true;
       }
     });
 
@@ -105,6 +110,9 @@ function App() {
         if (item.value === 'techo' && fundacionFound) {
           return true;
         }
+        if (item.value === 'ande' && andeFound) {
+          return true;
+        }
         return false;
       })
     );
@@ -114,7 +122,10 @@ function App() {
     <div ref={scrollInto}>
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ minheight: '8vh' }}>
-          <CustomHeader
+          <CustomHeader showSelector={isDesktopOrLaptop}></CustomHeader>
+        </Header>
+        <Content style={{ height: '92vh' }}>
+          <CustomMap
             onSelectorChange={setColorBy}
             selectorList={selectorList}
             selectorValue={colorBy}
@@ -124,31 +135,15 @@ function App() {
             helpSourceList={defaultHelpSourceList}
             onHelpSourceChange={setMarkersBy}
             helpSourceValue={markersBy}
-          ></CustomHeader>
-        </Header>
-        <Content style={{ height: '92vh' }}>
-          <CustomMap
             localities={localities}
             locality={currentLocality}
-            district={district}
             onLocalityChange={setCurrentLocality}
             colorBy={colorBy}
             markersBy={markersBy}
             koboEntries={koboEntries}
             cestasEntries={cestasEntries}
           ></CustomMap>
-          <InformationPanel
-            locality={currentLocality}
-            onSelectorChange={setColorBy}
-            selectorValue={colorBy}
-            selectorList={selectorList}
-            onDistrictChange={setDistrict}
-            district={district}
-            showSelector={!isDesktopOrLaptop}
-            helpSourceList={defaultHelpSourceList}
-            onHelpSourceChange={setMarkersBy}
-            helpSourceValue={markersBy}
-          ></InformationPanel>
+          <InformationPanel locality={currentLocality}></InformationPanel>
         </Content>
       </Layout>
     </div>

@@ -1,12 +1,17 @@
 import React from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import DataSourceSelector from './DataSourceSelector';
-import DistrictSelector from './DistrictSelector';
+// import DataSourceSelector from './DataSourceSelector';
+// import DistrictSelector from './DistrictSelector';
 
 export default function CustomHeader(props) {
   return (
     <div className="header" style={{ maxHeight: '20vh' }}>
-      <div className="header-title">Priorizador</div>
+      <img
+        className="header-logo"
+        src="priorizador_logo_1_blanco_horizontal.png"
+        alt="Priorizador"
+        style={{ height: 43, marginLeft: '-10px' }}
+      />
       <div className="header-info">
         <a
           href="https://medium.com/@d.riveros.garcia/una-propuesta-para-que-la-ayuda-covid-19-llegue-a-tantas-familias-paraguayas-como-sea-posible-8adfe1101806"
@@ -16,6 +21,7 @@ export default function CustomHeader(props) {
           <InfoCircleOutlined />
         </a>
       </div>
+      {/*
       {props.showSelector && (
         <div className="header-selector">
           <DistrictSelector
@@ -43,7 +49,7 @@ export default function CustomHeader(props) {
           />
         </div>
       )}
-
+      */}
       <div className="header-right">
         <img
           className="header-logo"

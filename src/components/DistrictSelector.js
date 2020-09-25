@@ -5,10 +5,10 @@ const { Option } = Select;
 
 const DistrictSelector = ({ onChange, value }) => (
   <Select
+    className="filter-select"
     defaultValue="CIUDAD DEL ESTE"
     value={value}
     onChange={onChange}
-    style={{ width: '100%' }}
   >
     <Option value="CIUDAD DEL ESTE">Ciudad del Este</Option>
     <Option value="HERNANDARIAS">Hernandarias</Option>
