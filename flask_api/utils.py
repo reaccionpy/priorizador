@@ -8,7 +8,9 @@ import pandas as pd
 import requests
 from shapely import geometry
 import utm
-
+from multiprocessing import Pool
+from functools import partial
+import pprint
 
 def google_sheets_to_df(key):
     r = requests.get(f"https://docs.google.com/spreadsheet/ccc?key={key}&output=csv")
@@ -18,6 +20,14 @@ def get_df_from_ckan(path):
     print(f"https://datos.org.py/{path}")
     r = requests.get(f"https://datos.org.py/{path}", verify=False)
     return pd.read_csv(BytesIO(r.content), sep=';')
+
+def get_resource_from_ckan(ande_query):
+    json_ande_query = json.loads(ande_query)
+    r = requests.post("https://datos.org.py/api/3/action/datastore_search"
+    ,json = json_ande_query, verify = False)
+    print(r.json())
+    data = r.json()
+    return data['result']['records']
 
 def add_properties_tekopora(feature_dict, df):
     for row in df.itertuples():
@@ -37,6 +47,21 @@ def coordinates_to_feature(lat, lng, features):
         if polygon.contains(point):
             return feature
     return None
+
+def from_utm_to_degrees(data):
+    zone_number = 21
+    zone_letter = 'J'
+
+    coord_x_utc = float(data['COORD_X'].replace(",", "."))
+    coord_y_utc = float(data['COORD_Y'].replace(",", "."))
+
+    if coord_x_utc >= 100000 and coord_x_utc <= 999999:
+        coord_utc_to_latlong = utm.to_latlon(coord_x_utc, coord_y_utc,
+                                            zone_number, zone_letter)
+        lat,lng = coord_utc_to_latlong[0],coord_utc_to_latlong[1]
+        return [lat,lng]
+
+    return []
 
 
 def add_properties_techo(features, df):
@@ -76,37 +101,30 @@ def add_properties_almuerzo(features, df):
     return features
 
 def add_properties_ande(features, df):
-    #department_filter = (df["DPTO"] == "Alto Paraná")
-    municipio_filter = ((df["MUNICIPIO"] == "CIUDAD DEL ESTE") | \
-        (df["MUNICIPIO"] == "HERNANDARIAS") | (df["MUNICIPIO"] == "MINGA GUAZU")\
-        | (df["MUNICIPIO"] == "PRESIDENTE FRANCO")) & (df["DPTO"] == "Alto Paraná")
-    # coordinate_filter = (df['COORD_X'].replace(",", ".").astype(float) >= 100000) & \
-    #                     (df['COORD_X'].replace(",", ".").astype(float) <= 999999)
-    zone_number = 21
-    zone_letter = 'J'
+    department_filter = ["CIUDAD DEL ESTE","HERNANDARIAS","MINGA GUAZU"
+                            , "PRESIDENTE FRANCO"]
+    pool = Pool(processes=2)
 
-    print("Cargando beneficiados de tarifa social ANDE...")
+    # filter df
+    df = [x for x in df if x['MUNICIPIO'] in department_filter]
 
-    for row in df[municipio_filter].itertuples():
-        # lat = -25.520062
-        # lng = -54.617810
-        coord_x_utc = float(row.COORD_X.replace(",", "."))
-        coord_y_utc = float(row.COORD_Y.replace(",", "."))
-        # coord_x_utc = 739408.0552076489
-        # coord_y_utc = 7175319.480995636
+    print("Agregando datos de tarifa social de ANDE")
 
-        if coord_x_utc >= 100000 and coord_x_utc <= 999999:
-            coord_utc_to_latlong = utm.to_latlon(coord_x_utc, coord_y_utc,
-                                                zone_number, zone_letter)
-            lat,lng = coord_utc_to_latlong[0],coord_utc_to_latlong[1]
-            # print(f"latitud: {lat} longitud: {lng}")
+    # func_add_feature = partial(add_feature, features = features,
+    #                             feature_name="ande", replace_comma=True,
+    #                             is_utm=True, field_x_name='COORD_X',
+    #                             field_y_name='COORD_Y')
+    list_coordinates_in_degrees = pool.map(from_utm_to_degrees,df)
 
+    for location in list_coordinates_in_degrees:
+        if len(location) > 0:
+            lat = location[0]
+            lng = location[1]
             feature = coordinates_to_feature(lat, lng, features)
             #print("feature: " + str(feature))
             if feature is not None:
              feature["properties"].setdefault("ande", 0)
              feature["properties"]["ande"] += 1
-    print("Carga finalizada de beneficiados de tarifa social ANDE")
     return features
 
 def kobo_to_response(kobo_entry):

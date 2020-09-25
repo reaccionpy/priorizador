@@ -8,6 +8,7 @@ from flasgger import Swagger, swag_from
 from flask import Flask, Response, request
 from flask_compress import Compress
 from flask_cors import CORS
+from datetime import datetime
 
 from utils import (
     add_properties_almuerzo,
@@ -18,6 +19,7 @@ from utils import (
     google_sheets_to_df,
     get_df_from_ckan,
     add_properties_ande,
+    get_resource_from_ckan
 )
 
 load_dotenv()
@@ -44,7 +46,7 @@ almuerzo_key = os.getenv("ALMUERZO")
 fundacion_key = os.getenv("FUNDACION")
 cestas_key = os.getenv("CESTAS")
 kobo_token = os.getenv("KOBO_API_TOKEN")
-ande_path = os.getenv("ANDE_PATH")
+ande_query = os.getenv("ANDE_QUERY")
 compress = Compress()
 
 # create logger
@@ -95,7 +97,9 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
-    ande_df = get_df_from_ckan(ande_path)
+    print("Comenzando a obtener datos de tarifa social a las: " + str(datetime.now()))
+    ande_df = get_resource_from_ckan(ande_query)
+    print("Se obtuvo todos los datos a las: " + str(datetime.now()))
     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
         shape = json.load(f)
         feature_dict = {
@@ -108,7 +112,9 @@ def get_json():
         features = add_properties_techo(features, techo_df)
         features = add_properties_fundacion(features, fundacion_df)
         features = add_properties_almuerzo(features, almuerzo_df)
+        print("Comenzando a agregar capa de tarifa social a las: " + str(datetime.now()))
         features = add_properties_ande(features, ande_df)
+        print("Finalizo proceso de agregar capa a las: " + str(datetime.now()))
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
