@@ -16,10 +16,7 @@ from utils import (
     add_properties_techo,
     add_properties_tekopora,
     get_kobo_data,
-    google_sheets_to_df,
-    get_df_from_ckan,
-    add_properties_ande,
-    get_resource_from_ckan
+    google_sheets_to_df
 )
 
 load_dotenv()
@@ -97,9 +94,6 @@ def get_json():
     techo_df = google_sheets_to_df(techo_key)
     almuerzo_df = google_sheets_to_df(almuerzo_key)
     fundacion_df = google_sheets_to_df(fundacion_key)
-    #print("Comenzando a obtener datos de tarifa social a las: " + str(datetime.now()))
-    #ande_df = get_resource_from_ckan(ande_query)
-    #print("Se obtuvo todos los datos a las: " + str(datetime.now()))
     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
         shape = json.load(f)
         feature_dict = {
@@ -112,9 +106,6 @@ def get_json():
         features = add_properties_techo(features, techo_df)
         features = add_properties_fundacion(features, fundacion_df)
         features = add_properties_almuerzo(features, almuerzo_df)
-        #print("Comenzando a agregar capa de tarifa social a las: " + str(datetime.now()))
-        #features = add_properties_ande(features, ande_df)
-        #print("Finalizo proceso de agregar capa a las: " + str(datetime.now()))
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
