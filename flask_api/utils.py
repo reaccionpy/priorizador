@@ -7,10 +7,6 @@ import lat_lon_parser
 import pandas as pd
 import requests
 from shapely import geometry
-import utm
-from multiprocessing import Pool
-from functools import partial
-import pprint
 
 def google_sheets_to_df(key):
     r = requests.get(f"https://docs.google.com/spreadsheet/ccc?key={key}&output=csv")
@@ -48,22 +44,6 @@ def coordinates_to_feature(lat, lng, features):
             return feature
     return None
 
-def from_utm_to_degrees(data):
-    zone_number = 21
-    zone_letter = 'J'
-
-    coord_x_utc = float(data['COORD_X'].replace(",", "."))
-    coord_y_utc = float(data['COORD_Y'].replace(",", "."))
-
-    if coord_x_utc >= 100000 and coord_x_utc <= 999999:
-        coord_utc_to_latlong = utm.to_latlon(coord_x_utc, coord_y_utc,
-                                            zone_number, zone_letter)
-        lat,lng = coord_utc_to_latlong[0],coord_utc_to_latlong[1]
-        return [lat,lng]
-
-    return []
-
-
 def add_properties_techo(features, df):
     for row in df.itertuples():
         coords = [float(v) for v in row.LATITUD_LONGITUD.split(",")]
@@ -98,33 +78,6 @@ def add_properties_almuerzo(features, df):
                 feature["properties"].setdefault("almuerzo", 0)
                 feature["properties"]["almuerzo"] += 1
             seen.add(row._4)
-    return features
-
-def add_properties_ande(features, df):
-    department_filter = ["CIUDAD DEL ESTE","HERNANDARIAS","MINGA GUAZU"
-                            , "PRESIDENTE FRANCO"]
-    pool = Pool(processes=2)
-
-    # filter df
-    df = [x for x in df if x['MUNICIPIO'] in department_filter]
-
-    print("Agregando datos de tarifa social de ANDE")
-
-    # func_add_feature = partial(add_feature, features = features,
-    #                             feature_name="ande", replace_comma=True,
-    #                             is_utm=True, field_x_name='COORD_X',
-    #                             field_y_name='COORD_Y')
-    list_coordinates_in_degrees = pool.map(from_utm_to_degrees,df)
-
-    for location in list_coordinates_in_degrees:
-        if len(location) > 0:
-            lat = location[0]
-            lng = location[1]
-            feature = coordinates_to_feature(lat, lng, features)
-            #print("feature: " + str(feature))
-            if feature is not None:
-             feature["properties"].setdefault("ande", 0)
-             feature["properties"]["ande"] += 1
     return features
 
 def kobo_to_response(kobo_entry):
