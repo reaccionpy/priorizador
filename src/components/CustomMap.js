@@ -203,7 +203,7 @@ export default function CustomMap(props) {
           icon={<FontAwesomeIcon icon={faPalette} />}
           anchor="bottom"
         >
-          <div class="sidebar-map-content">
+          <div className="sidebar-map-content">
             <p>
               Sección para la escala/peso de los colores de los polígonos que se
               muestran en el mapa
@@ -213,6 +213,7 @@ export default function CustomMap(props) {
       </Sidebar>
       <Map
         className="sidebar-map"
+        id="map"
         center={position}
         zoom={12}
         onMouseMove={debounce(onMouseMove, 200, { leading: true })}
