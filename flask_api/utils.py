@@ -44,7 +44,10 @@ def coordinates_to_feature(lat, lng, features):
             return feature
     return None
 
-def add_properties_techo(features, df):
+def add_properties_techo(feature_dict, df):
+
+    features = list(feature_dict.values())
+
     for row in df.itertuples():
         coords = [float(v) for v in row.LATITUD_LONGITUD.split(",")]
         feature = coordinates_to_feature(coords[0], coords[1], features)
@@ -54,8 +57,11 @@ def add_properties_techo(features, df):
     return features
 
 
-def add_properties_fundacion(features, df):
+def add_properties_fundacion(feature_dict, df):
     poverty_filter = (df["Pobreza extrema"] == "Sí") | (df["Pobreza"] == "Sí")
+
+    features = list(feature_dict.values())
+
     for row in df[poverty_filter].itertuples():
         lat = float(row.Latitude.replace(",", "."))
         lng = float(row.Longitude.replace(",", "."))
@@ -66,8 +72,11 @@ def add_properties_fundacion(features, df):
     return features
 
 
-def add_properties_almuerzo(features, df):
+def add_properties_almuerzo(feature_dict, df):
     coordinate_filter = (df["LATITUD"].notnull()) & (df["LONGITUD"].notnull())
+
+    features = list(feature_dict.values())
+
     seen = set()
     for row in df[coordinate_filter].itertuples():
         lat = lat_lon_parser.parse(row.LATITUD)
