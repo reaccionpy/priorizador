@@ -8,6 +8,7 @@ import CustomMap from './components/CustomMap';
 import InformationPanel from './components/InformationPanel';
 import { css } from '@emotion/core';
 import PulseLoader from 'react-spinners/PulseLoader';
+import localforage from 'localforage';
 
 const { Header, Content } = Layout;
 
@@ -161,13 +162,29 @@ function App() {
 
   useEffect(() => {
     handleLoadingDataset(true);
-
-    fetch(`${process.env.REACT_APP_API_URL}/${endpointsDict[colorBy]}`)
-      .then(r => r.json())
-      .then(data => {
-        setLocalities(data);
+    /* if the layer has been loaded and saved before, it is not necessary to
+    load it again
+    */
+    localforage.getItem(colorBy).then(layer_data => {
+      // console.log("got: ", layer_data);
+      if (layer_data == null) {
+        // get the layer_data
+        fetch(`${process.env.REACT_APP_API_URL}/${endpointsDict[colorBy]}`)
+          .then(r => r.json())
+          .then(data => {
+            setLocalities(data);
+            handleLoadingDataset(false);
+            // save the layer data
+            localforage.setItem(colorBy, data).then(() => {
+              // console.log("used localForage");
+            });
+          });
+      } else {
+        // use the saved layer data
+        setLocalities(layer_data);
         handleLoadingDataset(false);
-      });
+      }
+    });
   }, [colorBy]);
 
   return (
