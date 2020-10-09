@@ -110,3 +110,8 @@ html * {
   justify-content: center;
   align-items: center;
 }
+
+.filter-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
