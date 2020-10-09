@@ -9,6 +9,7 @@ import InformationPanel from './components/InformationPanel';
 import { css } from '@emotion/core';
 import PulseLoader from 'react-spinners/PulseLoader';
 import localforage from 'localforage';
+import moment from 'moment';
 
 const { Header, Content } = Layout;
 
@@ -25,7 +26,7 @@ const defaultHelpSourceList = [
   { title: 'Cestas básicas MCDE', value: 'cestas', default: false }
 ];
 
-const endpointsDict = {
+const endpoints_dict = {
   tekopora: 'get_tekopora_layer?departamento=10',
   almuerzo: 'get_almuerzo_layer?departamento=10',
   fundacion: 'get_fundacion_layer?departamento=10',
@@ -162,26 +163,38 @@ function App() {
 
   useEffect(() => {
     handleLoadingDataset(true);
-    /* if the layer has been loaded and saved before, it is not necessary to
-    load it again
+    /* if the layer has been loaded and saved before (no more than 7 days),
+    it is not necessary to load it again, it can be reused
     */
     localforage.getItem(colorBy).then(layer_data => {
-      // console.log("got: ", layer_data);
-      if (layer_data == null) {
+      // calculate the time difference between the current datetime and the
+      // moment when de data was saved
+      const now = moment().toDate();
+      const stored_time = layer_data['stored_time'];
+      const duration_stored_data = moment(now).diff(stored_time, 'days');
+      // console.log("duration of stored data: " + duration_stored_data + " days");
+      if (layer_data['data'] == null || duration_stored_data >= 7) {
+        // console.log("getting data")
         // get the layer_data
-        fetch(`${process.env.REACT_APP_API_URL}/${endpointsDict[colorBy]}`)
+        fetch(`${process.env.REACT_APP_API_URL}/${endpoints_dict[colorBy]}`)
           .then(r => r.json())
           .then(data => {
             setLocalities(data);
             handleLoadingDataset(false);
-            // save the layer data
-            localforage.setItem(colorBy, data).then(() => {
-              // console.log("used localForage");
+            // save the layer data and current time
+            const now = moment().toDate();
+            const data_and_saved_time = {
+              data: data,
+              stored_time: now
+            };
+            localforage.setItem(colorBy, data_and_saved_time).then(() => {
+              // console.log(data_and_saved_time);
             });
           });
       } else {
+        // console.log("Data can be reused. Reusing it");
         // use the saved layer data
-        setLocalities(layer_data);
+        setLocalities(layer_data['data']);
         handleLoadingDataset(false);
       }
     });
