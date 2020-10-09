@@ -10,7 +10,7 @@ export default function CustomHeader(props) {
         className="header-logo"
         src="priorizador_logo_1_blanco_horizontal.png"
         alt="Priorizador"
-        style={{ height: 65, marginLeft: '-10px' }}
+        style={{ height: 60, marginLeft: '-10px' }}
       />
       <div className="header-info">
         <a
