@@ -60,7 +60,7 @@ html * {
 }
 
 .header-info {
-  font-size: calc(8px + 2vmin);
+  font-size: calc(13px + 2vmin);
   margin-right: 8px;
   margin-top: 3px;
   color: #fff;

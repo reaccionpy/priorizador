@@ -4,7 +4,7 @@
   bottom: 10px;
   width: 70%;
   overflow: hidden;
-  z-index: 1100;
+  z-index: 1001;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
   transition: width 0.5s;
   height: 280px;
