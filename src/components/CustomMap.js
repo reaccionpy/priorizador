@@ -80,7 +80,7 @@ export default function CustomMap(props) {
 
   useEffect(() => {
     const districtPositionMap = {
-      'CIUDAD DEL ESTE': [-25.513475, -54.61544],
+      'CIUDAD DEL ESTE': [-25.505435, -54.682828],
       HERNANDARIAS: [-25.40944, -54.63819],
       'MINGA GUAZU': [-25.48881, -54.80826],
       'PRESIDENTE FRANCO': [-25.57439, -54.60375]
@@ -229,7 +229,7 @@ export default function CustomMap(props) {
         className="sidebar-map"
         id="map"
         center={position}
-        zoom={12}
+        zoom={13}
         onMouseMove={debounce(onMouseMove, 200, { leading: true })}
         onMoveEnd={updateMap}
         ref={mapRef}
