@@ -115,3 +115,58 @@ html * {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+#bottom-information-panel {
+  max-height: 100%;
+  width: calc(170px + 25vmin);
+  z-index: 1000;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  opacity: 0.9;
+}
+
+#bottom-information-panel.hide {
+  max-height: 0%;
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+#bottom-information-panel .card {
+  max-height: 200px;
+  overflow: auto;
+  background: white;
+  padding: 15px;
+}
+
+#show-panel-button {
+  display: none;
+}
+
+#show-panel-button.hide {
+  z-index: 1000;
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  border: none;
+  border-radius: 5px;
+  background: white;
+  color: #3fa652eb;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #bottom-information-panel {
+    width: 80%;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  #show-panel-button {
+    left: 50%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

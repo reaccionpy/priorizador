@@ -10,6 +10,7 @@ import { css } from '@emotion/core';
 import PulseLoader from 'react-spinners/PulseLoader';
 import localforage from 'localforage';
 import moment from 'moment';
+import BottomInformationPanel from './components/BottomInformationPanel';
 
 const { Header, Content } = Layout;
 
@@ -232,6 +233,9 @@ function App() {
             cestasEntries={cestasEntries}
           ></CustomMap>
           <InformationPanel locality={currentLocality}></InformationPanel>
+          <BottomInformationPanel
+            locality={currentLocality}
+          ></BottomInformationPanel>
         </Content>
       </Layout>
     </div>
