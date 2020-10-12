@@ -84,7 +84,20 @@ def healthcheck():
 
 @app.route("/reaccion/get_available_layers", methods=["GET"])
 def get_available_layers():
-    distrito = request.args.get("distrito")
+    districts_layers = {
+        'CIUDAD DEL ESTE': ['tekopora','almuerzo','fundacion','techo','ande'],
+        'HERNANDARIAS': ['tekopora','ande'],
+        'MINGA GUAZU': ['tekopora','ande'],
+        'PRESIDENTE FRANCO': ['tekopora','almuerzo','techo','ande']
+    }
+
+    district_arg = request.args.get("distrito")
+    if district_arg is None:
+        district_arg = "CIUDAD DEL ESTE"
+
+    available_layers = {'layers': districts_layers[district_arg]}
+
+    return available_layers
 
 
 @app.route("/reaccion/get_tekopora_layer", methods=["GET"])

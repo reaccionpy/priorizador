@@ -145,7 +145,7 @@ def add_properties_ande(feature_dict, df, department_number):
     print("Coordenadas finalmente formateadas a las : "+ str(dttime.now()))
 
     print("Agregando ande properties a features : "+ str(dttime.now()))
-    # add de property ande 
+    # add the property ande 
     for location in list_coordinates_in_degrees:
         if len(location) > 0:
             lat = location[0]

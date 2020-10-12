@@ -63,6 +63,7 @@ function App() {
   const [koboEntries, setKoboEntries] = useState([]);
   const [cestasEntries, setCestasEntries] = useState([]);
   const [isLoadingDataset, setIsLoadingDataset] = useState(false);
+  const [availableLayers, setAvailableLayers] = useState([]);
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 768px)'
@@ -100,55 +101,32 @@ function App() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   const localitiesByDistrict = localities.features.filter(
-  //     l => l.properties.dist_desc === district
-  //   );
-  //   let techoFound = false;
-  //   let almuerzoFound = false;
-  //   let fundacionFound = false;
-  //   let andeFound = false;
-  //
-  //   localitiesByDistrict.forEach(locality => {
-  //     if (locality.properties.techo) {
-  //       techoFound = true;
-  //     }
-  //     if (locality.properties.almuerzo) {
-  //       almuerzoFound = true;
-  //     }
-  //     if (locality.properties.fundacion) {
-  //       fundacionFound = true;
-  //     }
-  //     if (locality.properties.ande) {
-  //       andeFound = true;
-  //     }
-  //   });
-  //
-  //   setSelectorList(
-  //     defaultSelectorList.filter(item => {
-  //       if (item.value === 'tekopora') {
-  //         return true;
-  //       }
-  //       if (item.value === 'almuerzo' && techoFound) {
-  //         return true;
-  //       }
-  //       if (item.value === 'fundacion' && almuerzoFound) {
-  //         return true;
-  //       }
-  //       if (item.value === 'techo' && fundacionFound) {
-  //         return true;
-  //       }
-  //       if (item.value === 'ande' && andeFound) {
-  //         return true;
-  //       }
-  //       return false;
-  //     })
-  //   );
-  // }, [district, localities.features]);
+  useEffect(() => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/get_available_layers?distrito=${district}`
+    )
+      .then(r => r.json())
+      .then(data => {
+        setAvailableLayers(data['layers']);
+      });
+  }, [district, setAvailableLayers]);
 
   useEffect(() => {
-    setSelectorList(defaultSelectorList);
-  }, [district, localities.features]);
+    if (availableLayers.length > 0) {
+      setSelectorList(
+        defaultSelectorList.filter(item => {
+          if (availableLayers.indexOf(item.value) > -1) {
+            return true;
+          }
+          return false;
+        })
+      );
+
+      if (availableLayers.indexOf(colorBy) < 0) {
+        setColorBy(defaultSelectorList[0].value);
+      }
+    }
+  }, [availableLayers, colorBy]);
 
   useEffect(() => {
     handleLoadingDataset(true);
