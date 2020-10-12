@@ -2,23 +2,23 @@ import json
 import logging
 import os
 import pathlib
+from datetime import datetime
 
 from dotenv import load_dotenv
 from flasgger import Swagger, swag_from
 from flask import Flask, Response, request
 from flask_compress import Compress
 from flask_cors import CORS
-from datetime import datetime
 
 from utils import (
     add_properties_almuerzo,
+    add_properties_ande,
     add_properties_fundacion,
     add_properties_techo,
     add_properties_tekopora,
     get_kobo_data,
+    get_resource_from_ckan_with_sql_query,
     google_sheets_to_df,
-    add_properties_ande,
-    get_resource_from_ckan_with_sql_query
 )
 
 load_dotenv()
@@ -112,6 +112,7 @@ def healthcheck():
 #         response_pickled = json.dumps(shape)
 #     return Response(response=response_pickled, status=200, mimetype="application/json")
 
+
 @app.route("/reaccion/get_tekopora_layer", methods=["GET"])
 def get_tekopora_layer():
     """Getting geojson for specific region"""
@@ -121,9 +122,9 @@ def get_tekopora_layer():
         dep = "10"
     # load only the default layer: Tekopora
     tekopora_df = google_sheets_to_df(tekopora_key)
-    #techo_df = google_sheets_to_df(techo_key)
-    #almuerzo_df = google_sheets_to_df(almuerzo_key)
-    #fundacion_df = google_sheets_to_df(fundacion_key)
+    # techo_df = google_sheets_to_df(techo_key)
+    # almuerzo_df = google_sheets_to_df(almuerzo_key)
+    # fundacion_df = google_sheets_to_df(fundacion_key)
     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
         shape = json.load(f)
         feature_dict = {
@@ -133,9 +134,9 @@ def get_tekopora_layer():
             and f["properties"]["distrito"] in distritos
         }
         features = add_properties_tekopora(feature_dict, tekopora_df)
-        #features = add_properties_techo(features, techo_df)
-        #features = add_properties_fundacion(features, fundacion_df)
-        #features = add_properties_almuerzo(features, almuerzo_df)
+        # features = add_properties_techo(features, techo_df)
+        # features = add_properties_fundacion(features, fundacion_df)
+        # features = add_properties_almuerzo(features, almuerzo_df)
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
@@ -162,6 +163,7 @@ def get_almuerzo_layer():
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
+
 
 @app.route("/reaccion/get_fundacion_layer", methods=["GET"])
 def get_fundacion_layer():
@@ -215,7 +217,7 @@ def get_ande_layer():
     if dep is None:
         dep = "10"
     print("Descargando datos de ANDE a las: " + str(datetime.now()))
-    ande_df = get_resource_from_ckan_with_sql_query(ande_query)['result']['records']
+    ande_df = get_resource_from_ckan_with_sql_query(ande_query)["result"]["records"]
     print("Descarga finalizada a las: " + str(datetime.now()))
     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
         shape = json.load(f)
