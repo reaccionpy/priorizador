@@ -7,23 +7,26 @@ import lat_lon_parser
 import pandas as pd
 import requests
 from shapely import geometry
+import utm
+from multiprocessing import Pool
 
 def google_sheets_to_df(key):
     r = requests.get(f"https://docs.google.com/spreadsheet/ccc?key={key}&output=csv")
     return pd.read_csv(BytesIO(r.content))
 
-def get_df_from_ckan(path):
-    print(f"https://datos.org.py/{path}")
-    r = requests.get(f"https://datos.org.py/{path}", verify=False)
-    return pd.read_csv(BytesIO(r.content), sep=';')
 
-def get_resource_from_ckan(ande_query):
-    json_ande_query = json.loads(ande_query)
-    r = requests.post("https://datos.org.py/api/3/action/datastore_search"
-    ,json = json_ande_query, verify = False)
-    print(r.json())
+def get_resource_from_ckan_with_json_query(query_json):
+    query_json = json.loads(query_json)
+    r = requests.get("https://datos.org.py/api/3/action/datastore_search"
+    , json = query_json, verify = False)
     data = r.json()
-    return data['result']['records']
+    return data
+
+def get_resource_from_ckan_with_sql_query(query_sql):
+    r = requests.get("""https://datos.org.py/api/3/action/datastore_search_sql?sql=""" + query_sql
+    , verify = False)
+    data = r.json()
+    return data
 
 def add_properties_tekopora(feature_dict, df):
     for row in df.itertuples():
@@ -43,6 +46,22 @@ def coordinates_to_feature(lat, lng, features):
         if polygon.contains(point):
             return feature
     return None
+
+def from_utm_to_degrees(data):
+    zone_number = 21
+    zone_letter = 'J'
+
+    coord_x_utc = float(data['COORD_X'].replace(",", "."))
+    coord_y_utc = float(data['COORD_Y'].replace(",", "."))
+
+    if coord_x_utc >= 100000 and coord_x_utc <= 999999:
+        coord_utc_to_latlong = utm.to_latlon(coord_x_utc, coord_y_utc,
+                                            zone_number, zone_letter)
+        lat,lng = coord_utc_to_latlong[0],coord_utc_to_latlong[1]
+        return [lat,lng]
+
+    return []
+
 
 def add_properties_techo(feature_dict, df):
 
@@ -88,6 +107,58 @@ def add_properties_almuerzo(feature_dict, df):
                 feature["properties"]["almuerzo"] += 1
             seen.add(row._4)
     return features
+
+
+def add_properties_ande(feature_dict, df, department_number):
+    processes = 3
+    dttime = datetime.datetime
+    departments_limits_utm = [
+        {
+            'dep': "10",
+            'coordinates': {
+                'coord_x_min': 643802,
+                'coord_x_max': 768631,
+                'cood_y_min': 7094723,
+                'coord_y_max': 7292270
+            }
+        }
+    ]
+
+    features = list(feature_dict.values())
+
+    print("Agregando datos de tarifa social de ANDE")
+    print("Formateando coordenadas: "+ str(dttime.now()))
+    # delete data whose coordinates are outside the department area
+    # obtain the coordinates' range of the department
+    ranges_coord = [department["coordinates"] for department in departments_limits_utm if department['dep'] == department_number]
+    ranges_coord = ranges_coord[0]
+    x_min, x_max = ranges_coord["coord_x_min"], ranges_coord["coord_x_max"]
+    y_min, y_max = ranges_coord["cood_y_min"], ranges_coord["coord_y_max"]
+    # excluding wrong data
+    df = [data for data in df if float(data['COORD_X'].replace(",", "."))>=x_min and float(data['COORD_X'].replace(",", "."))<=x_max]
+    df = [data for data in df if float(data['COORD_Y'].replace(",", "."))>=y_min and float(data['COORD_Y'].replace(",", "."))<=y_max]
+
+    # transform the coordinates in utm to degrees
+    with Pool(processes) as p:
+        list_coordinates_in_degrees = p.map(from_utm_to_degrees, df)
+
+    print("Coordenadas finalmente formateadas a las : "+ str(dttime.now()))
+
+    print("Agregando ande properties a features : "+ str(dttime.now()))
+    # add de property ande 
+    for location in list_coordinates_in_degrees:
+        if len(location) > 0:
+            lat = location[0]
+            lng = location[1]
+            feature = coordinates_to_feature(lat, lng, features)
+            if feature is not None:
+             feature["properties"].setdefault("ande", 0)
+             feature["properties"]["ande"] += 1
+
+    print("Ande properties agregadas completamente a las: "+ str(dttime.now()))
+
+    return features
+
 
 def kobo_to_response(kobo_entry):
     e = collections.defaultdict(lambda: None, kobo_entry)

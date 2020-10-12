@@ -15,8 +15,8 @@ const defaultSelectorList = [
   { title: 'Tekopora', value: 'tekopora', default: true },
   { title: 'Almuerzo escolar', value: 'almuerzo', default: false },
   { title: 'Fundación Paraguaya', value: 'fundacion', default: false },
-  { title: 'Techo', value: 'techo', default: false }
-  //{ title: 'Tarifa social ANDE', value: 'ande', default: false }
+  { title: 'Techo', value: 'techo', default: false },
+  { title: 'Tarifa social ANDE', value: 'ande', default: false }
 ];
 
 const defaultHelpSourceList = [
@@ -28,7 +28,8 @@ const endpointsDict = {
   tekopora: 'get_tekopora_layer?departamento=10',
   almuerzo: 'get_almuerzo_layer?departamento=10',
   fundacion: 'get_fundacion_layer?departamento=10',
-  techo: 'get_techo_layer?departamento=10'
+  techo: 'get_techo_layer?departamento=10',
+  ande: 'get_ande_layer?departamento=10'
 };
 
 const override = css`

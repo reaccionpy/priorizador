@@ -16,7 +16,9 @@ from utils import (
     add_properties_techo,
     add_properties_tekopora,
     get_kobo_data,
-    google_sheets_to_df
+    google_sheets_to_df,
+    add_properties_ande,
+    get_resource_from_ckan_with_sql_query
 )
 
 load_dotenv()
@@ -200,6 +202,31 @@ def get_techo_layer():
             and f["properties"]["distrito"] in distritos
         }
         features = add_properties_techo(feature_dict, techo_df)
+        shape["features"] = features
+        response_pickled = json.dumps(shape)
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+
+@app.route("/reaccion/get_ande_layer", methods=["GET"])
+def get_ande_layer():
+    """Getting geojson for specific region"""
+    dep = request.args.get("departamento")
+    distritos = ["01", "02", "05", "11"]
+    if dep is None:
+        dep = "10"
+    print("Descargando datos de ANDE a las: " + str(datetime.now()))
+    ande_df = get_resource_from_ckan_with_sql_query(ande_query)['result']['records']
+    print("Descarga finalizada a las: " + str(datetime.now()))
+    with open(GEOJSON_PATH, "r", encoding="utf8") as f:
+        shape = json.load(f)
+        feature_dict = {
+            f["properties"]["objectid"]: f
+            for f in shape["features"]
+            if f["properties"]["dpto"] == dep
+            and f["properties"]["distrito"] in distritos
+        }
+        # features = add_properties_techo(feature_dict, techo_df)
+        features = add_properties_ande(feature_dict, ande_df, dep)
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
