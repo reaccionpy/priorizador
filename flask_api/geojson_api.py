@@ -82,18 +82,46 @@ def healthcheck():
 
 
 # route for face detection service
-@app.route("/reaccion/get_json", methods=["GET"])
-@swag_from("./api-docs/get_json.yml")
-def get_json():
+# @app.route("/reaccion/get_json", methods=["GET"])
+# @swag_from("./api-docs/get_json.yml")
+# def get_json():
+#     """Getting geojson for specific region"""
+#     dep = request.args.get("departamento")
+#     distritos = ["01", "02", "05", "11"]
+#     if dep is None:
+#         dep = "10"
+#     tekopora_df = google_sheets_to_df(tekopora_key)
+#     techo_df = google_sheets_to_df(techo_key)
+#     almuerzo_df = google_sheets_to_df(almuerzo_key)
+#     fundacion_df = google_sheets_to_df(fundacion_key)
+#     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
+#         shape = json.load(f)
+#         feature_dict = {
+#             f["properties"]["objectid"]: f
+#             for f in shape["features"]
+#             if f["properties"]["dpto"] == dep
+#             and f["properties"]["distrito"] in distritos
+#         }
+#         features = add_properties_tekopora(feature_dict, tekopora_df)
+#         features = add_properties_techo(features, techo_df)
+#         features = add_properties_fundacion(features, fundacion_df)
+#         features = add_properties_almuerzo(features, almuerzo_df)
+#         shape["features"] = features
+#         response_pickled = json.dumps(shape)
+#     return Response(response=response_pickled, status=200, mimetype="application/json")
+
+@app.route("/reaccion/get_tekopora_layer", methods=["GET"])
+def get_tekopora_layer():
     """Getting geojson for specific region"""
     dep = request.args.get("departamento")
     distritos = ["01", "02", "05", "11"]
     if dep is None:
         dep = "10"
+    # load only the default layer: Tekopora
     tekopora_df = google_sheets_to_df(tekopora_key)
-    techo_df = google_sheets_to_df(techo_key)
-    almuerzo_df = google_sheets_to_df(almuerzo_key)
-    fundacion_df = google_sheets_to_df(fundacion_key)
+    #techo_df = google_sheets_to_df(techo_key)
+    #almuerzo_df = google_sheets_to_df(almuerzo_key)
+    #fundacion_df = google_sheets_to_df(fundacion_key)
     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
         shape = json.load(f)
         feature_dict = {
@@ -103,9 +131,75 @@ def get_json():
             and f["properties"]["distrito"] in distritos
         }
         features = add_properties_tekopora(feature_dict, tekopora_df)
-        features = add_properties_techo(features, techo_df)
-        features = add_properties_fundacion(features, fundacion_df)
-        features = add_properties_almuerzo(features, almuerzo_df)
+        #features = add_properties_techo(features, techo_df)
+        #features = add_properties_fundacion(features, fundacion_df)
+        #features = add_properties_almuerzo(features, almuerzo_df)
+        shape["features"] = features
+        response_pickled = json.dumps(shape)
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+
+@app.route("/reaccion/get_almuerzo_layer", methods=["GET"])
+def get_almuerzo_layer():
+    """Getting almuerzo escolar geojson for specific region"""
+    dep = request.args.get("departamento")
+    distritos = ["01", "02", "05", "11"]
+    if dep is None:
+        dep = "10"
+    almuerzo_df = google_sheets_to_df(almuerzo_key)
+    with open(GEOJSON_PATH, "r", encoding="utf8") as f:
+        shape = json.load(f)
+        feature_dict = {
+            f["properties"]["objectid"]: f
+            for f in shape["features"]
+            if f["properties"]["dpto"] == dep
+            and f["properties"]["distrito"] in distritos
+        }
+
+        features = add_properties_almuerzo(feature_dict, almuerzo_df)
+        shape["features"] = features
+        response_pickled = json.dumps(shape)
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+@app.route("/reaccion/get_fundacion_layer", methods=["GET"])
+def get_fundacion_layer():
+    """Getting almuerzo escolar geojson for specific region"""
+    dep = request.args.get("departamento")
+    distritos = ["01", "02", "05", "11"]
+    if dep is None:
+        dep = "10"
+    fundacion_df = google_sheets_to_df(fundacion_key)
+    with open(GEOJSON_PATH, "r", encoding="utf8") as f:
+        shape = json.load(f)
+        feature_dict = {
+            f["properties"]["objectid"]: f
+            for f in shape["features"]
+            if f["properties"]["dpto"] == dep
+            and f["properties"]["distrito"] in distritos
+        }
+        features = add_properties_fundacion(feature_dict, fundacion_df)
+        shape["features"] = features
+        response_pickled = json.dumps(shape)
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+
+@app.route("/reaccion/get_techo_layer", methods=["GET"])
+def get_techo_layer():
+    """Getting geojson for specific region"""
+    dep = request.args.get("departamento")
+    distritos = ["01", "02", "05", "11"]
+    if dep is None:
+        dep = "10"
+    techo_df = google_sheets_to_df(techo_key)
+    with open(GEOJSON_PATH, "r", encoding="utf8") as f:
+        shape = json.load(f)
+        feature_dict = {
+            f["properties"]["objectid"]: f
+            for f in shape["features"]
+            if f["properties"]["dpto"] == dep
+            and f["properties"]["distrito"] in distritos
+        }
+        features = add_properties_techo(feature_dict, techo_df)
         shape["features"] = features
         response_pickled = json.dumps(shape)
     return Response(response=response_pickled, status=200, mimetype="application/json")
