@@ -16,9 +16,10 @@ services:
       - TECHO
       - ALMUERZO
       - FUNDACION
-      - KOBO_TOKEN
+      - KOBO_API_TOKEN
       - CESTAS
       - ANDE_PATH
+      - ANDE_QUERY
 
   priorizador:
     build:
