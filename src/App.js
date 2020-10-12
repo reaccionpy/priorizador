@@ -6,6 +6,8 @@ import { Layout } from 'antd';
 import CustomHeader from './components/CustomHeader';
 import CustomMap from './components/CustomMap';
 import InformationPanel from './components/InformationPanel';
+import { css } from '@emotion/core';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 const { Header, Content } = Layout;
 
@@ -21,6 +23,16 @@ const defaultHelpSourceList = [
   { title: 'Pintá con tu ayuda', value: 'kobo', default: true },
   { title: 'Cestas básicas MCDE', value: 'cestas', default: false }
 ];
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: #3fa652eb;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  z-index: 1000;
+`;
 
 function App() {
   const scrollInto = useRef(null);
@@ -39,20 +51,36 @@ function App() {
   const [markersBy, setMarkersBy] = useState('kobo');
   const [koboEntries, setKoboEntries] = useState([]);
   const [cestasEntries, setCestasEntries] = useState([]);
+  const [isLoadingDataset, setIsLoadingDataset] = useState(false);
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 768px)'
   });
+
+  const handleLoadingDataset = isLoading => {
+    var map = document.getElementById('map');
+
+    setIsLoadingDataset(isLoading);
+
+    if (isLoading) {
+      map.style.opacity = '0.5';
+    } else {
+      map.style.opacity = '1';
+    }
+  };
 
   useEffect(() => {
     scrollInto.current.scrollIntoView();
   });
 
   useEffect(() => {
+    handleLoadingDataset(true);
+
     fetch(`${process.env.REACT_APP_API_URL}/get_json?departamento=10`)
       .then(r => r.json())
       .then(data => {
         setLocalities(data);
+        handleLoadingDataset(false);
       });
   }, []);
 
@@ -125,6 +153,12 @@ function App() {
           <CustomHeader showSelector={isDesktopOrLaptop}></CustomHeader>
         </Header>
         <Content style={{ height: '92vh' }}>
+          <PulseLoader
+            css={override}
+            size={50}
+            color={'#3fa652eb'}
+            loading={isLoadingDataset}
+          />
           <CustomMap
             onSelectorChange={setColorBy}
             selectorList={selectorList}
