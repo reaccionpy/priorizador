@@ -213,6 +213,7 @@ export default function CustomMap(props) {
       </Sidebar>
       <Map
         className="sidebar-map"
+        id="map"
         center={position}
         zoom={12}
         onMouseMove={debounce(onMouseMove, 200, { leading: true })}
