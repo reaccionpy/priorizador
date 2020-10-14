@@ -144,6 +144,8 @@ export default function CustomMap(props) {
 
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState('home');
+  const [showSubsidio, setShowSubsidio] = useState(true);
+  const [showAyuda, setShowAyuda] = useState(true);
 
   const onClose = () => {
     setCollapsed(true);
@@ -170,23 +172,35 @@ export default function CustomMap(props) {
           icon={<FontAwesomeIcon icon={faFilter} />}
         >
           <div>
-            <div>
+            <div className="filter-container">
               <FontAwesomeIcon icon={faMap} /> Distrito <br></br>
               <DistrictSelector
                 onChange={props.onDistrictChange}
                 value={props.district}
               />
             </div>
-            <div>
-              <FontAwesomeIcon icon={faDrawPolygon} /> Subsidio <br></br>
+            <div className="filter-container">
+              <FontAwesomeIcon icon={faDrawPolygon} /> Subsidio &nbsp;
+              <input
+                type="checkbox"
+                checked={showSubsidio}
+                id="show-subsidio"
+                onChange={() => setShowSubsidio(!showSubsidio)}
+              />
+              <br></br>
               <DataSourceSelector
                 onChange={props.onSelectorChange}
                 value={props.selectorValue}
                 list={props.selectorList}
               />
             </div>
-            <div>
-              <FontAwesomeIcon icon={faMapMarkerAlt} /> Ayuda entregada{' '}
+            <div className="filter-container">
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> Ayuda entregada &nbsp;
+              <input
+                type="checkbox"
+                checked={showAyuda}
+                onChange={() => setShowAyuda(!showAyuda)}
+              />
               <br></br>
               <DataSourceSelector
                 onChange={props.onHelpSourceChange}
@@ -224,7 +238,8 @@ export default function CustomMap(props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {props.markersBy === 'kobo' &&
+        {showAyuda &&
+          props.markersBy === 'kobo' &&
           props.koboEntries.map((value, index) => {
             return (
               <Marker key={`kobo-${index}`} position={value.coordinates}>
@@ -248,7 +263,8 @@ export default function CustomMap(props) {
               </Marker>
             );
           })}
-        {props.markersBy === 'cestas' &&
+        {showAyuda &&
+          props.markersBy === 'cestas' &&
           clusters.map((cluster, index) => {
             // every cluster point has coordinates
             const [longitude, latitude] = cluster.geometry.coordinates;
@@ -308,7 +324,13 @@ export default function CustomMap(props) {
             );
           })}
         }
-        <GeoJSON data={props.localities} style={getStyle} ref={geoJsonLayer} />
+        {showSubsidio && (
+          <GeoJSON
+            data={props.localities}
+            style={getStyle}
+            ref={geoJsonLayer}
+          />
+        )}
       </Map>
     </>
   );
