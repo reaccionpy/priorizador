@@ -131,10 +131,32 @@ function App() {
   useEffect(() => {
     handleLoadingDataset(true);
     localforage.getItem(colorBy).then(layer_data => {
-      const now = moment().toDate();
-      const stored_time = layer_data['stored_time'];
-      const duration_stored_data = moment(now).diff(stored_time, 'days');
-      if (layer_data['data'] == null || duration_stored_data >= 7) {
+      // calculate the time difference between the current datetime and the
+      // moment when de data was saved
+      if (layer_data != null) {
+        const now = moment().toDate();
+        const stored_time = layer_data['stored_time'];
+        const duration_stored_data = moment(now).diff(stored_time, 'days');
+        if (layer_data['data'] == null || duration_stored_data >= 7) {
+          fetch(`${process.env.REACT_APP_API_URL}/${endpoints_dict[colorBy]}`)
+            .then(r => r.json())
+            .then(data => {
+              setLocalities(data);
+              handleLoadingDataset(false);
+              // save the layer data and current time
+              const now = moment().toDate();
+              const data_and_saved_time = {
+                data: data,
+                stored_time: now
+              };
+              localforage.setItem(colorBy, data_and_saved_time);
+            });
+        } else {
+          // use the saved layer data
+          setLocalities(layer_data['data']);
+          handleLoadingDataset(false);
+        }
+      } else {
         fetch(`${process.env.REACT_APP_API_URL}/${endpoints_dict[colorBy]}`)
           .then(r => r.json())
           .then(data => {
@@ -145,11 +167,8 @@ function App() {
               data: data,
               stored_time: now
             };
-            localforage.setItem(colorBy, data_and_saved_time).then(() => {});
+            localforage.setItem(colorBy, data_and_saved_time);
           });
-      } else {
-        setLocalities(layer_data['data']);
-        handleLoadingDataset(false);
       }
     });
   }, [colorBy]);
