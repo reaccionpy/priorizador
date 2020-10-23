@@ -17,13 +17,13 @@ def google_sheets_to_df(key):
 
 def get_resource_from_ckan_with_json_query(query_json):
     query_json = json.loads(query_json)
-    r = requests.get("https://datos.org.py/api/3/action/datastore_search"
+    r = requests.get("https://portal.datos.org.py/api/3/action/datastore_search"
     , json = query_json, verify = False)
     data = r.json()
     return data
 
 def get_resource_from_ckan_with_sql_query(query_sql):
-    r = requests.get("""https://datos.org.py/api/3/action/datastore_search_sql?sql=""" + query_sql
+    r = requests.get("""https://portal.datos.org.py/api/3/action/datastore_search_sql?sql=""" + query_sql
     , verify = False)
     data = r.json()
     return data
@@ -145,7 +145,7 @@ def add_properties_ande(feature_dict, df, department_number):
     print("Coordenadas finalmente formateadas a las : "+ str(dttime.now()))
 
     print("Agregando ande properties a features : "+ str(dttime.now()))
-    # add de property ande 
+    # add de property ande
     for location in list_coordinates_in_degrees:
         if len(location) > 0:
             lat = location[0]
