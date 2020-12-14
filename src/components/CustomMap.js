@@ -120,8 +120,9 @@ export default function CustomMap(props) {
 
   function getStyle(feature, layer) {
     const scale = chroma
-      .scale('RdYlBu')
-      .domain([transformByVariable(maxColor), 0]);
+      .scale(['#fedb8b', '#a50026'])
+      .domain([transformByVariable(maxColor), 0])
+      .classes(3);
     const value = getValue(feature.properties);
     const color = scale(transformByVariable(value)).hex();
     return {
@@ -136,8 +137,9 @@ export default function CustomMap(props) {
 
     const getLayerColorAndQuantity = feature => {
       const scale = chroma
-        .scale('RdYlBu')
-        .domain([transformByVariable(maxColor), 0]);
+        .scale(['#fedb8b', '#a50026'])
+        .domain([transformByVariable(maxColor), 0])
+        .classes(3);
       const value = getValue(feature.properties);
       const color = scale(transformByVariable(value)).hex();
 
@@ -149,7 +151,6 @@ export default function CustomMap(props) {
       var colorAndQuantity = getLayerColorAndQuantity(feature);
       allColorsAndQuantities.push(colorAndQuantity);
     }
-
     setColorsAndQuantities(allColorsAndQuantities.slice());
   }, [props.localities, getValue, maxColor, transformByVariable]);
 
@@ -348,8 +349,12 @@ export default function CustomMap(props) {
           />
         )}
       </Map>
-      <ColorScale colorsAndQuantities={colorsAndQuantities} />
-      <ColorScale colorsAndQuantities={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
+      {showSubsidio && (
+        <ColorScale
+          colorsAndQuantities={colorsAndQuantities}
+          colorBy={props.colorBy}
+        />
+      )}
     </>
   );
 }
