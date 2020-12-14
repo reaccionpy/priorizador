@@ -11,6 +11,9 @@ export default function Menu(props) {
         <div
           className={props.showMenu ? 'menu-sidebar' : 'menu-sidebar collapsed'}
         >
+          <div className="menu-title" style={{ display: 'none' }}>
+            Menu
+          </div>
           <Link
             className="menu-link"
             to="/about"

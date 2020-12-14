@@ -63,3 +63,44 @@
 .menu-link {
   color: white;
 }
+
+/* Opcion 2: un poco de transparencia al sidebar */
+/* .menu-sidebar {
+  background-color: rgb(77, 172, 94, 0.93);
+} */
+/* Fin de Opcion 2 */
+
+/* Opcion 3: menu-sidebar blanco */
+/* .menu-sidebar {
+  background-color: rgba(255, 255, 255, 0.93); ;
+  color: green;
+}
+.menu-sidebar .menu-option:hover {
+  background-color: rgb(77, 172, 94, 1);
+  color: white;
+}
+.menu-sidebar .menu-link {
+  color: rgb(77, 172, 94, 1);
+} */
+/* Fin de Opcion 3 */
+
+/* Opcion 4: Menu sideb
+ar como el sidebar de filtros */
+/* .menu-sidebar {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+.menu-sidebar .menu-title{
+  background-color: rgb(77, 172, 94, 0.95);
+  margin-top: -15px;
+  margin-right: -15px;
+  margin-left: -15px;
+  display: block !important;
+}
+.menu-sidebar .menu-link {
+  color: rgb(77, 172, 94, 1);
+}
+.menu-sidebar .menu-option:hover {
+  background: none;
+  color: green;
+} */
+/* Fin de Opcion 4 */
