@@ -2,3 +2,15 @@
   margin: 30px;
   font-size: 1.4em;
 }
+
+.about-content h1 {
+  text-align: center;
+}
+
+/* Responsive section */
+@media only screen and (max-width: 768px) {
+  .about-content p {
+    text-align: justify;
+  }
+}
+/* End of Responsive section */

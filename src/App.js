@@ -212,16 +212,16 @@ function App() {
           <Header style={{ minheight: '8vh', zIndex: '1200', height: 'auto' }}>
             <CustomHeader showSelector={isDesktopOrLaptop}></CustomHeader>
           </Header>
-          <Content style={{ height: '92vh' }}>
-            <Switch>
-              <Route exact path="/">
+          <Switch>
+            <Route exact path="/">
+              <Content style={{ height: '92vh' }}>
                 <Mapa />
-              </Route>
-              <Route path="/about">
-                <About />
-              </Route>
-            </Switch>
-          </Content>
+              </Content>
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+          </Switch>
         </Router>
       </Layout>
     </div>
