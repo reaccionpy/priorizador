@@ -61,19 +61,19 @@ export default function ColorScale(props) {
   useEffect(() => {
     switch (colorBy) {
       case 'tekopora':
-        setTopic('beneficiarios');
+        setTopic('Cantidad de beneficiarios');
         break;
       case 'fundacion':
-        setTopic('familias en situación de pobreza');
+        setTopic('Cant. de familias en vulnerabilidad');
         break;
       case 'techo':
-        setTopic('asentamientos');
+        setTopic('Cantidad de asentamientos');
         break;
       case 'almuerzo':
-        setTopic('escuelas priorizadas');
+        setTopic('Cantidad de escuelas priorizadas');
         break;
       case 'ande':
-        setTopic('beneficiados');
+        setTopic('Cantidad de beneficiarios');
         break;
       default:
         break;
@@ -94,7 +94,7 @@ export default function ColorScale(props) {
                 );
               })}
             </div>
-            <div id="title">Cantidad de {topic}</div>
+            <div id="title">{topic}</div>
           </div>
         </>
       )}
