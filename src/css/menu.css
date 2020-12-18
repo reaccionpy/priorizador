@@ -1,0 +1,75 @@
+.menu,
+.menu-sidebar {
+  overflow: hidden;
+}
+
+.menu {
+  max-height: 500px;
+  font-size: 1.2em;
+  transition: max-height 0.8s;
+}
+
+.menu.collapsed {
+  max-height: 0;
+}
+
+.menu .menu-option {
+  padding-left: 15px;
+}
+
+.menu-option:hover {
+  background-color: white;
+  color: green;
+}
+
+.menu-option-icon {
+  width: 20%;
+  float: left;
+}
+
+.menu-option-desc {
+  width: 80%;
+}
+
+.menu-link {
+  color: white;
+}
+
+/* menu-sidebar (Desktop) */
+.menu-sidebar {
+  background-color: rgba(255, 255, 255, 0.93);
+  color: green;
+  max-width: 600px;
+  position: absolute;
+  margin-top: 5px;
+  margin-left: -15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 15px;
+  text-align: center;
+  height: 280px;
+  font-size: 1.7em;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+  transition: all 0.5s;
+  z-index: 1100;
+}
+
+.menu-sidebar.collapsed {
+  padding-right: 0;
+  padding-left: 0;
+  max-width: 0;
+}
+
+.menu-sidebar .menu-option {
+  width: 320px;
+}
+
+.menu-sidebar .menu-option:hover {
+  background-color: rgb(77, 172, 94, 1);
+  color: white;
+}
+.menu-sidebar .menu-link {
+  color: rgb(77, 172, 94, 1);
+}
+/* End of menu-sidebar*/
