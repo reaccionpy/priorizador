@@ -83,17 +83,6 @@ function App() {
     scrollInto.current.scrollIntoView();
   });
 
-  // useEffect(() => {
-  //   handleLoadingDataset(true);
-  //
-  //   fetch(`${process.env.REACT_APP_API_URL}/get_json?departamento=10`)
-  //     .then(r => r.json())
-  //     .then(data => {
-  //       setLocalities(data);
-  //       handleLoadingDataset(false);
-  //     });
-  // }, []);
-
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/get_kobo_submissions`)
       .then(r => r.json())
@@ -109,52 +98,6 @@ function App() {
         setCestasEntries(data);
       });
   }, []);
-
-  // useEffect(() => {
-  //   const localitiesByDistrict = localities.features.filter(
-  //     l => l.properties.dist_desc === district
-  //   );
-  //   let techoFound = false;
-  //   let almuerzoFound = false;
-  //   let fundacionFound = false;
-  //   let andeFound = false;
-  //
-  //   localitiesByDistrict.forEach(locality => {
-  //     if (locality.properties.techo) {
-  //       techoFound = true;
-  //     }
-  //     if (locality.properties.almuerzo) {
-  //       almuerzoFound = true;
-  //     }
-  //     if (locality.properties.fundacion) {
-  //       fundacionFound = true;
-  //     }
-  //     if (locality.properties.ande) {
-  //       andeFound = true;
-  //     }
-  //   });
-  //
-  //   setSelectorList(
-  //     defaultSelectorList.filter(item => {
-  //       if (item.value === 'tekopora') {
-  //         return true;
-  //       }
-  //       if (item.value === 'almuerzo' && techoFound) {
-  //         return true;
-  //       }
-  //       if (item.value === 'fundacion' && almuerzoFound) {
-  //         return true;
-  //       }
-  //       if (item.value === 'techo' && fundacionFound) {
-  //         return true;
-  //       }
-  //       if (item.value === 'ande' && andeFound) {
-  //         return true;
-  //       }
-  //       return false;
-  //     })
-  //   );
-  // }, [district, localities.features]);
 
   // Now, the selector list has the elements of defaultSelectorList, without filter
   useEffect(() => {
