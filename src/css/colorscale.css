@@ -1,0 +1,16 @@
+.info {
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  position: absolute;
+  bottom: 20px;
+  right: 5px;
+  z-index: 1100;
+}
+
+.legend {
+  text-align: center;
+  line-height: 18px;
+  color: #555;
+}

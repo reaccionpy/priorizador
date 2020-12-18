@@ -21,8 +21,8 @@ export default function InformationPanel(props) {
       <p key="fundacion">
         <b>Fundación Paraguaya: </b>
         {n > 1
-          ? `${n} familias en situación de pobreza`
-          : `${n} familia en situación de pobreza`}
+          ? `${n} familias en vulnerabilidad`
+          : `${n} familia en vulnerabilidad`}
       </p>
     ),
     techo: n => (
@@ -40,7 +40,7 @@ export default function InformationPanel(props) {
     ande: n => (
       <p key="ande">
         <b>Tarifa social ANDE: </b>
-        {n > 1 ? `${n} beneficiados` : `${n} beneficiado`}
+        {n > 1 ? `${n} beneficiarios` : `${n} beneficiario`}
       </p>
     )
   };

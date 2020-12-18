@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { Map, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import { debounce } from 'lodash';
@@ -12,13 +12,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFilter,
   faTimes,
-  faPalette,
   faMapMarkerAlt,
   faDrawPolygon,
   faMap
 } from '@fortawesome/free-solid-svg-icons';
 import DataSourceSelector from './DataSourceSelector';
 import DistrictSelector from './DistrictSelector';
+import ColorScale from './ColorScale';
 
 const icons = {};
 
@@ -42,6 +42,7 @@ export default function CustomMap(props) {
   const [maxColor, setMaxColor] = React.useState(1);
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(13);
+  const [colorsAndQuantities, setColorsAndQuantities] = useState([]);
 
   const mapRef = React.useRef();
   function updateMap() {
@@ -100,20 +101,28 @@ export default function CustomMap(props) {
     options: { radius: 75, maxZoom: 20 }
   });
 
-  function getStyle(feature, layer) {
-    const transformByVariable = n =>
-      props.colorBy === 'tekopora' ? Math.log(n) : n;
+  const transformByVariable = useCallback(
+    n => {
+      return props.colorBy === 'tekopora' ? Math.log(n) : n;
+    },
+    [props.colorBy]
+  );
 
-    const getValue = properties => {
+  const getValue = useCallback(
+    properties => {
       const def = props.colorBy === 'tekopora' ? 1 : 0;
       return properties.dist_desc === props.district
         ? properties[props.colorBy] || def
         : def;
-    };
+    },
+    [props.colorBy, props.district]
+  );
 
+  function getStyle(feature, layer) {
     const scale = chroma
-      .scale('RdYlBu')
-      .domain([transformByVariable(maxColor), 0]);
+      .scale(['#fedb8b', '#a50026'])
+      .domain([transformByVariable(maxColor), 0])
+      .classes(3);
     const value = getValue(feature.properties);
     const color = scale(transformByVariable(value)).hex();
     return {
@@ -122,6 +131,28 @@ export default function CustomMap(props) {
       opacity: 0.65
     };
   }
+
+  useEffect(() => {
+    var allColorsAndQuantities = [];
+
+    const getLayerColorAndQuantity = feature => {
+      const scale = chroma
+        .scale(['#fedb8b', '#a50026'])
+        .domain([transformByVariable(maxColor), 0])
+        .classes(3);
+      const value = getValue(feature.properties);
+      const color = scale(transformByVariable(value)).hex();
+
+      return [color, value];
+    };
+
+    for (let i = 0; i < props.localities.features.length; i++) {
+      var feature = props.localities.features[i];
+      var colorAndQuantity = getLayerColorAndQuantity(feature);
+      allColorsAndQuantities.push(colorAndQuantity);
+    }
+    setColorsAndQuantities(allColorsAndQuantities.slice());
+  }, [props.localities, getValue, maxColor, transformByVariable]);
 
   function onMouseMove(e) {
     const point = {
@@ -208,20 +239,6 @@ export default function CustomMap(props) {
                 list={props.helpSourceList}
               />
             </div>
-          </div>
-        </Tab>
-
-        <Tab
-          id="settings"
-          header="Escala de colores"
-          icon={<FontAwesomeIcon icon={faPalette} />}
-          anchor="bottom"
-        >
-          <div className="sidebar-map-content">
-            <p>
-              Sección para la escala/peso de los colores de los polígonos que se
-              muestran en el mapa
-            </p>
           </div>
         </Tab>
       </Sidebar>
@@ -332,6 +349,12 @@ export default function CustomMap(props) {
           />
         )}
       </Map>
+      {showSubsidio && (
+        <ColorScale
+          colorsAndQuantities={colorsAndQuantities}
+          colorBy={props.colorBy}
+        />
+      )}
     </>
   );
 }
