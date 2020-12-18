@@ -30,10 +30,10 @@
 }
 
 .information-panel {
-  width: calc(170px + 25vmin);
+  width: calc(170px + 20vmin);
   z-index: 1000;
   position: absolute;
-  top: 100px;
+  margin-top: 10px;
   right: 20px;
   opacity: 0.9;
 }

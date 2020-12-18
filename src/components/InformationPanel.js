@@ -1,7 +1,5 @@
 import React from 'react';
 import { Card } from 'antd';
-// import DataSourceSelector from './DataSourceSelector';
-// import DistrictSelector from './DistrictSelector';
 
 export default function InformationPanel(props) {
   const contentRenderers = {
@@ -54,34 +52,6 @@ export default function InformationPanel(props) {
     .filter(c => c);
   return (
     <div className="information-panel">
-      {/*
-      {props.showSelector && (
-        <div className="information-panel-selector">
-          <DistrictSelector
-            onChange={props.onDistrictChange}
-            value={props.district}
-          />
-        </div>
-      )}
-      {props.showSelector && (
-        <div className="information-panel-selector">
-          <DataSourceSelector
-            onChange={props.onSelectorChange}
-            value={props.selectorValue}
-            list={props.selectorList}
-          />
-        </div>
-      )}
-      {props.showSelector && (
-        <div className="information-panel-selector">
-          <DataSourceSelector
-            onChange={props.onHelpSourceChange}
-            value={props.helpSourceValue}
-            list={props.helpSourceList}
-          />
-        </div>
-      )}
-      */}
       {content && content.length > 0 && (
         <Card title={props.locality.properties.barlo_desc}>{content}</Card>
       )}
