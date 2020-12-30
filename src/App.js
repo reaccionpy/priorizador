@@ -12,6 +12,7 @@ import localforage from 'localforage';
 import moment from 'moment';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import About from './components/About';
+import Analysis from './components/Analysis';
 
 const { Header, Content } = Layout;
 
@@ -220,6 +221,9 @@ function App() {
             </Route>
             <Route path="/about">
               <About />
+            </Route>
+            <Route path="/analysis">
+              <Analysis />
             </Route>
           </Switch>
         </Router>
