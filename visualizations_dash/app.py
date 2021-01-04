@@ -9,12 +9,18 @@ from dotenv import load_dotenv
 import requests
 from shapely import geometry
 import statsmodels.api as sm
+from flask_caching import Cache
 import datetime
 
 load_dotenv()
 data_api_url = os.getenv("DATA_API_URL")
 
 app = dash.Dash(__name__)
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'simple',
+})
+
+cache_timeout = 604800
 
 # available options for x axis
 available_x_axis = [
@@ -121,37 +127,18 @@ app.layout = html.Div([
     ], style={'position': 'absolute', 'top': '325px', 'left': '50%'})
 ])
 
-@app.callback(
-    dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
-    dash.dependencies.Output("loading-scatter", "children"),
-    [dash.dependencies.Input('subsidio_type', 'value'),
-     dash.dependencies.Input('ayuda_type', 'value'),
-     dash.dependencies.Input('crossfilter-xaxis-type', 'value'),
-     dash.dependencies.Input('crossfilter-yaxis-type', 'value')]
-)
-def update_graph(subsidio_type_value, ayuda_type_value, xaxis_type, yaxis_type):
+@cache.memoize(timeout=cache_timeout)
+def get_data_from_api(endpoint):
+        request = requests.get("%s/%s" % (data_api_url,
+                                            layer_data_api_uris[endpoint]))
+        return request.json()
 
-    print("Comienzo de descarga de datos:" + str(datetime.datetime.now()))
 
-    x_axis_data_request = requests.get("%s/%s" % (data_api_url,
-                                        layer_data_api_uris[subsidio_type_value]))
-    x_axis_data = x_axis_data_request.json()
-
-    y_axis_data_request = requests.get("%s/%s" % (data_api_url,
-                                        layer_data_api_uris[ayuda_type_value]))
-    y_axis_data = y_axis_data_request.json()
-
-    print("Finalizacion de descarga de datos:" + str(datetime.datetime.now()))
-
-    x_axis_label = [x_option["label"] for x_option in available_x_axis
-                    if x_option["value"] == subsidio_type_value][0]
-    y_axis_label = [y_option["label"] for y_option in available_y_axis
-                    if y_option["value"] == ayuda_type_value][0]
+@cache.memoize(timeout=cache_timeout)
+def process_data(x_axis_data, y_axis_data, ayuda_type_value,
+                 subsidio_type_value, x_axis_label, y_axis_label):
     data = {x_axis_label:[], y_axis_label:[]}
 
-    print("Comienzo de procesamiento de datos:" + str(datetime.datetime.now()))
-
-    # join data from x axis and y axis
     for feature in x_axis_data["features"]:
         polygon = geometry.shape(feature["geometry"])
         help_quantity_here = get_help_quantity_in_polygon(
@@ -163,6 +150,36 @@ def update_graph(subsidio_type_value, ayuda_type_value, xaxis_type, yaxis_type):
             data[x_axis_label].append(feature["properties"][subsidio_type_value]
                 if subsidio_type_value in feature["properties"] else 0)
             data[y_axis_label].append(help_quantity_here)
+
+    return data
+
+@app.callback(
+    dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
+    dash.dependencies.Output("loading-scatter", "children"),
+    [dash.dependencies.Input('subsidio_type', 'value'),
+     dash.dependencies.Input('ayuda_type', 'value'),
+     dash.dependencies.Input('crossfilter-xaxis-type', 'value'),
+     dash.dependencies.Input('crossfilter-yaxis-type', 'value')]
+)
+def update_graph(subsidio_type_value, ayuda_type_value, xaxis_type, yaxis_type):
+    print("Comienzo de descarga de datos:" + str(datetime.datetime.now()))
+
+    x_axis_data = get_data_from_api(subsidio_type_value)
+
+    y_axis_data = get_data_from_api(ayuda_type_value)
+
+    print("Finalizacion de descarga de datos:" + str(datetime.datetime.now()))
+
+    x_axis_label = [x_option["label"] for x_option in available_x_axis
+                    if x_option["value"] == subsidio_type_value][0]
+    y_axis_label = [y_option["label"] for y_option in available_y_axis
+                    if y_option["value"] == ayuda_type_value][0]
+
+    print("Comienzo de procesamiento de datos:" + str(datetime.datetime.now()))
+
+    # join data from x axis and y axis
+    data = process_data(x_axis_data, y_axis_data, ayuda_type_value,
+                 subsidio_type_value, x_axis_label, y_axis_label)
 
     print("Finalizacion de procesamiento de datos:" + str(datetime.datetime.now()))
 
