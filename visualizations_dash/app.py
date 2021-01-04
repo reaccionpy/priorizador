@@ -74,6 +74,12 @@ app.layout = html.Div([
                 value='tekopora',
                 clearable=False
             ),
+            dcc.RadioItems(
+                id='crossfilter-xaxis-type',
+                options=[{'label': i, 'value': i} for i in ['Lineal', 'Logartímica']],
+                value='Lineal',
+                labelStyle={'display': 'inline-block'}
+            )
         ],
         style={'width': '49%', 'display': 'inline-block'}),
 
@@ -85,6 +91,12 @@ app.layout = html.Div([
                 value='kobo',
                 clearable=False
             ),
+            dcc.RadioItems(
+                id='crossfilter-yaxis-type',
+                options=[{'label': i, 'value': i} for i in ['Lineal', 'Logartímica']],
+                value='Lineal',
+                labelStyle={'display': 'inline-block'}
+            )
         ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
     ], style={
         'borderBottom': 'thin lightgrey solid',
@@ -112,9 +124,11 @@ app.layout = html.Div([
     dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
     dash.dependencies.Output("loading-scatter", "children"),
     [dash.dependencies.Input('subsidio_type', 'value'),
-     dash.dependencies.Input('ayuda_type', 'value')]
+     dash.dependencies.Input('ayuda_type', 'value'),
+     dash.dependencies.Input('crossfilter-xaxis-type', 'value'),
+     dash.dependencies.Input('crossfilter-yaxis-type', 'value')]
 )
-def update_graph(subsidio_type_value, ayuda_type_value):
+def update_graph(subsidio_type_value, ayuda_type_value, xaxis_type, yaxis_type):
 
     print("Comienzo de descarga de datos:" + str(datetime.datetime.now()))
 
@@ -154,6 +168,10 @@ def update_graph(subsidio_type_value, ayuda_type_value):
     print("Comienzo de creacion de grafico:" + str(datetime.datetime.now()))
     df = pd.DataFrame(data)
     fig = px.scatter(df, x=x_axis_label, y=y_axis_label)
+
+    fig.update_xaxes(type='linear' if xaxis_type == 'Lineal' else 'log')
+
+    fig.update_yaxes(type='linear' if yaxis_type == 'Lineal' else 'log')
 
     fig = go.Figure(fig)
     fig.update_traces(
