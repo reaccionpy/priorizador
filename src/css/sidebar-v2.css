@@ -137,7 +137,7 @@
 .sidebar-tabs > li.active,
 .sidebar-tabs > ul > li.active {
   color: #fff;
-  background-color: #3fa652eb;
+  background-color: #121e34;
 }
 
 .sidebar-tabs > li.disabled,
@@ -212,7 +212,7 @@
   line-height: 40px;
   font-size: 14.4pt;
   color: #fff;
-  background-color: #3fa652eb;
+  background-color: #121e34;
 }
 
 .sidebar-right .sidebar-header {

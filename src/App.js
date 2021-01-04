@@ -39,7 +39,7 @@ const endpoints_dict = {
 const override = css`
   display: block;
   margin: 0 auto;
-  border-color: #3fa652eb;
+  border-color: #121e34;
   position: absolute;
   top: 50%;
   left: 45%;
@@ -179,7 +179,7 @@ function App() {
         <PulseLoader
           css={override}
           size={50}
-          color={'#3fa652eb'}
+          color={'#121E34'}
           loading={isLoadingDataset}
         />
         <InformationPanel locality={currentLocality}></InformationPanel>

@@ -19,7 +19,7 @@
 
 .menu-option:hover {
   background-color: white;
-  color: green;
+  color: #121e34;
 }
 
 .menu-option-icon {
@@ -38,7 +38,7 @@
 /* menu-sidebar (Desktop) */
 .menu-sidebar {
   background-color: rgba(255, 255, 255, 0.93);
-  color: green;
+  color: #121e34;
   max-width: 600px;
   position: absolute;
   margin-top: 5px;
@@ -66,10 +66,10 @@
 }
 
 .menu-sidebar .menu-option:hover {
-  background-color: rgb(77, 172, 94, 1);
+  background-color: #121e34;
   color: white;
 }
 .menu-sidebar .menu-link {
-  color: rgb(77, 172, 94, 1);
+  color: #121e34;
 }
 /* End of menu-sidebar*/
