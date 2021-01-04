@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from shapely import geometry
+import statsmodels.api as sm
 import datetime
 
 load_dotenv()
@@ -168,6 +169,11 @@ def update_graph(subsidio_type_value, ayuda_type_value, xaxis_type, yaxis_type):
     print("Comienzo de creacion de grafico:" + str(datetime.datetime.now()))
     df = pd.DataFrame(data)
     fig = px.scatter(df, x=x_axis_label, y=y_axis_label)
+
+    # linear regression
+    if xaxis_type == 'Lineal' and yaxis_type == 'Lineal':
+        df['regression'] = sm.OLS(df[y_axis_label],sm.add_constant(df[x_axis_label])).fit().fittedvalues
+        fig.add_trace(go.Scatter(name='Regresión lineal', x=df[x_axis_label], y=df['regression'], mode='lines'))
 
     fig.update_xaxes(type='linear' if xaxis_type == 'Lineal' else 'log')
 
