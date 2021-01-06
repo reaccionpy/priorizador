@@ -9,7 +9,7 @@ export default function Analysis() {
         <iframe
           title="scatter-plot-1"
           width="100%"
-          height="620px"
+          height="630px"
           src={`${process.env.REACT_APP_DASH_URL}/`}
         ></iframe>
       </div>
