@@ -18,14 +18,24 @@ services:
       - FUNDACION
       - KOBO_API_TOKEN
       - CESTAS
-      - ANDE_PATH
       - ANDE_QUERY
+
+  dash:
+    build: ./visualizations_dash
+    image: dash
+    ports:
+      - '8050:8050'
+    network_mode: host
+    environment:
+      - REACT_APP_API_URL
+      - DASH_DEBUG_MODE
 
   priorizador:
     build:
       context: ./
       args:
         REACT_APP_API_URL: ${REACT_APP_API_URL}
+        REACT_APP_DASH_URL: ${REACT_APP_DASH_URL}
     image: priorizador
     ports:
       - '8080:8080'

@@ -10,12 +10,17 @@ import requests
 from shapely import geometry
 import statsmodels.api as sm
 from flask_caching import Cache
+from flask import Flask
 import datetime
 
-load_dotenv()
-data_api_url = os.getenv("DATA_API_URL")
 
-app = dash.Dash(__name__)
+load_dotenv()
+data_api_url = os.getenv("REACT_APP_API_URL")
+dash_debug_mode = os.getenv("DASH_DEBUG_MODE")
+
+server = Flask(__name__)
+
+app = dash.Dash(server=server)
 cache = Cache(app.server, config={
     'CACHE_TYPE': 'simple',
 })
@@ -235,4 +240,5 @@ def get_help_quantity_in_polygon(help_type, y_axis_data, polygon):
     return help_quantity
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    debug = False if dash_debug_mode == "False" else True
+    app.run_server(host="0.0.0.0", port=8050, debug=debug)
