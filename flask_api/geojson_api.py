@@ -88,7 +88,7 @@ def get_available_layers():
         'CIUDAD DEL ESTE': ['tekopora','almuerzo','fundacion','techo','ande'],
         'HERNANDARIAS': ['tekopora','ande'],
         'MINGA GUAZU': ['tekopora','ande'],
-        'PRESIDENTE FRANCO': ['tekopora','almuerzo','techo','ande']
+        'PRESIDENTE FRANCO': ['tekopora','fundacion','techo','ande']
     }
 
     district_arg = request.args.get("distrito")
