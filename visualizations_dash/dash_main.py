@@ -88,7 +88,7 @@ app.layout = html.Div([
             ),
             dcc.RadioItems(
                 id='crossfilter-xaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Lineal', 'Logartímica']],
+                options=[{'label': i, 'value': i} for i in ['Lineal', 'Logarítmica']],
                 value='Lineal',
                 labelStyle={'display': 'inline-block'}
             )
@@ -105,7 +105,7 @@ app.layout = html.Div([
             ),
             dcc.RadioItems(
                 id='crossfilter-yaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Lineal', 'Logartímica']],
+                options=[{'label': i, 'value': i} for i in ['Lineal', 'Logarítmica']],
                 value='Lineal',
                 labelStyle={'display': 'inline-block'}
             )
