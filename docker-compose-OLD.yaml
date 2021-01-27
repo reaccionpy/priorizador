@@ -20,49 +20,12 @@ services:
       - CESTAS
       - ANDE_QUERY
 
-  redis:
-    image: redis
-    networks:
-      - network
-
-  celery-worker:
-    build:
-      context: ./visualizations_dash
-      dockerfile: Dockerfile.Celery
-    image: celery-worker
-    entrypoint: celery
-    command: -A dash_main.celery worker --loglevel=info
-    networks:
-      - network
-    depends_on:
-    - redis
-    environment:
-      - REDIS_SERVER
-
-  celery-beat:
-    build:
-      context: ./visualizations_dash
-      dockerfile: Dockerfile.Celery
-    image: celery-beat
-    entrypoint: celery
-    command: -A dash_main.celery beat --loglevel=info
-    networks:
-      - network
-    depends_on:
-    - celery-worker
-    - redis
-    environment:
-      - REDIS_SERVER
-
   dash:
     build: ./visualizations_dash
     image: dash
     ports:
       - '8050:8050'
-    networks:
-      - network
-    depends_on:
-    - redis
+    network_mode: host
     environment:
       - REACT_APP_API_URL
       - DASH_DEBUG_MODE

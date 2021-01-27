@@ -20,6 +20,7 @@ import json
 load_dotenv()
 data_api_url = os.getenv("REACT_APP_API_URL")
 dash_debug_mode = os.getenv("DASH_DEBUG_MODE")
+redis_server = os.getenv("REDIS_SERVER")
 
 server = Flask(__name__)
 
@@ -31,12 +32,12 @@ cache = Cache(app.server, config={
 cache_timeout = 14400
 
 # configure Celery
-server.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-server.config['CELERY_BACKEND'] = 'redis://localhost:6379/0'
+server.config['CELERY_BROKER_URL'] = 'redis://%s:6379/0' % redis_server
+server.config['CELERY_BACKEND'] = 'redis://%s:6379/0' % redis_server
 celery = make_celery(server)
 
 #configure redis
-redis = redis.Redis(host='localhost', port=6379, db=0)
+redis = redis.Redis(host=redis_server, port=6379, db=0)
 
 # available options for x axis
 available_x_axis = [
@@ -291,12 +292,20 @@ def update_graph(subsidio_type_value, ayuda_type_value, xaxis_type, yaxis_type):
 
     return fig, None
 
+@celery.task(name="dash_main.test_celery")
+def test_celery():
+    return "Testing Celery: Ok"
+
 
 # Configure Celery's tasks scheduler
 celery.conf.beat_schedule = {
  "update_all_precalculated_data": {
  "task": "dash_main.precalculate_all_data_for_graphics",
- "schedule": crontab(hour='3', minute='0')
+ "schedule": crontab(hour='1', minute='30')
+ },
+ "test_celery": {
+ "task": "dash_main.test_celery",
+ "schedule": crontab(minute='*')
  }
 }
 
