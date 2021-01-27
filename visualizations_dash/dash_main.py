@@ -301,7 +301,7 @@ def test_celery():
 celery.conf.beat_schedule = {
  "update_all_precalculated_data": {
  "task": "dash_main.precalculate_all_data_for_graphics",
- "schedule": crontab(hour='1', minute='30')
+ "schedule": crontab(hour='3', minute='0')
  },
  "test_celery": {
  "task": "dash_main.test_celery",

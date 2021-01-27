@@ -22,6 +22,8 @@ services:
 
   redis:
     image: redis
+    networks:
+      - network
 
   celery-worker:
     build:
@@ -30,11 +32,13 @@ services:
     image: celery-worker
     entrypoint: celery
     command: -A dash_main.celery worker --loglevel=info
-    links:
-      - redis
     depends_on:
       - redis
+      - flask-api
+    networks:
+      - network
     environment:
+      - REACT_APP_API_URL=http://python-svc:5000/reaccion
       - REDIS_SERVER
 
   celery-beat:
@@ -44,12 +48,11 @@ services:
     image: celery-beat
     entrypoint: celery
     command: -A dash_main.celery beat --loglevel=info
-    links:
-      - celery-worker
-      - redis
     depends_on:
-      - celery-worker
-      - redis
+    - celery-worker
+    - redis
+    networks:
+      - network
     environment:
       - REDIS_SERVER
 
@@ -58,9 +61,13 @@ services:
     image: dash
     ports:
       - '8050:8050'
-    network_mode: host
+    depends_on:
+      - redis
+      - flask-api
+    networks:
+      - network
     environment:
-      - REACT_APP_API_URL
+      - REACT_APP_API_URL=http://python-svc:5000/reaccion
       - DASH_DEBUG_MODE
       - REDIS_SERVER
 
