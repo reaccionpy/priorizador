@@ -22,8 +22,6 @@ services:
 
   redis:
     image: redis
-    networks:
-      - network
 
   celery-worker:
     build:
@@ -32,10 +30,10 @@ services:
     image: celery-worker
     entrypoint: celery
     command: -A dash_main.celery worker --loglevel=info
-    networks:
-      - network
+    links:
+      - redis
     depends_on:
-    - redis
+      - redis
     environment:
       - REDIS_SERVER
 
@@ -46,11 +44,12 @@ services:
     image: celery-beat
     entrypoint: celery
     command: -A dash_main.celery beat --loglevel=info
-    networks:
-      - network
+    links:
+      - celery-worker
+      - redis
     depends_on:
-    - celery-worker
-    - redis
+      - celery-worker
+      - redis
     environment:
       - REDIS_SERVER
 
@@ -59,10 +58,7 @@ services:
     image: dash
     ports:
       - '8050:8050'
-    networks:
-      - network
-    depends_on:
-    - redis
+    network_mode: host
     environment:
       - REACT_APP_API_URL
       - DASH_DEBUG_MODE
