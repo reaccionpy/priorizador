@@ -12,7 +12,7 @@ export default function InformationPanel(props) {
     tekopora: n => (
       <p key="tekopora">
         <b>Tekoporã: </b>
-        {n > 1 ? `${n} beneficiarios` : `${n} beneficiario`}
+        {n > 1 ? `${n} familias beneficiarias` : `${n} familia beneficiaria`}
       </p>
     ),
     fundacion: n => (
