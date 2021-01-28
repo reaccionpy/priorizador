@@ -1,92 +1,155 @@
 import React from 'react';
 import '../css/about.css';
+import TextSwitch from './TextSwitch';
 
 export default function About() {
   return (
     <>
       <div className="about-content">
-        <h1> Acerca del Priorizador </h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at
-          tortor consectetur, porta magna vel, pharetra massa. Nulla aliquam
-          pellentesque velit id molestie. In sit amet semper nulla. Suspendisse
-          metus nisl, fermentum non eros non, varius consectetur nisl. In
-          ullamcorper condimentum euismod. Cras feugiat, dui eget placerat
-          tristique, odio nulla vestibulum urna, eu aliquet velit nisi non elit.
-          Pellentesque id iaculis risus, in tincidunt nisl.
-        </p>
-        <p>
-          Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Duis non vulputate neque. Vestibulum non
-          blandit orci, sit amet vulputate eros. Praesent tempor mauris ornare
-          ultrices accumsan. Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit. Phasellus convallis leo id lacus ornare porta. Nullam lobortis
-          consectetur purus, nec faucibus purus scelerisque vitae. Fusce dapibus
-          vitae sem vel iaculis. Maecenas vestibulum in ligula eget tincidunt.
-          Pellentesque commodo facilisis nulla, eu scelerisque purus eleifend
-          id. Nullam elementum dolor a leo ultrices volutpat. Nunc tellus nibh,
-          tempus id pulvinar luctus, porttitor eu justo.
-        </p>
-        <p>
-          Aliquam erat volutpat. Duis a lacus non urna cursus efficitur a
-          vulputate felis. Mauris varius ultricies enim, at faucibus diam
-          venenatis quis. Duis interdum purus eu elit porta auctor. Vestibulum
-          sit amet vestibulum ligula. Proin maximus tortor nibh, malesuada
-          ullamcorper metus posuere ac. Nam facilisis, ex sed laoreet
-          ullamcorper, massa purus rutrum dui, eu volutpat justo urna vitae sem.
-          Vestibulum luctus ex sed quam eleifend, eu porta diam feugiat.
-          Phasellus dignissim rutrum libero sit amet facilisis.
-        </p>
+        <h1>Priorizador v1.0</h1>
+        <TextSwitch title="¿Qu&eacute; es el Priorizador?" showText={true}>
+          <p>
+            El Priorizador es una herramienta que contribuye a identificar los
+            barrios m&aacute;s vulnerables de un municipio y visibilizar el
+            destino de la ayuda de fuentes p&uacute;blicas o privadas.
+          </p>
+          <p>
+            La herramienta se encuentra en su primera versi&oacute;n y
+            seguir&aacute; en desarrollo para facilitar la focalizaci&oacute;n
+            basada en evidencia de pol&iacute;ticas p&uacute;blicas.
+          </p>
+        </TextSwitch>
 
-        <h1>¿De d&oacute;nde provienen los datos?</h1>
-        <p>
-          Aliquam vehicula, lorem non fringilla posuere, eros ex commodo lectus,
-          a iaculis mi ipsum at enim. Proin cursus, tortor cursus rutrum congue,
-          massa est molestie nibh, sollicitudin rhoncus tortor enim ac enim. Nam
-          faucibus, diam imperdiet tempus molestie, ligula augue feugiat massa,
-          sed consequat enim neque nec lectus. Ut et congue quam. Integer in
-          massa pharetra ligula ullamcorper lobortis. Praesent vehicula iaculis
-          massa sit amet luctus. Suspendisse in nisi et leo facilisis pharetra
-          ut et purus.
-        </p>
+        <TextSwitch title="&iquest;Cu&aacute;les son los objetivos del Priorizador?">
+          <p>
+            La pandemia COVID-19 expuso la necesidad de invertir eficientemente
+            los pocos recursos disponibles. No hay suficientes recursos para
+            beneficiar a todas las familias que necesitan ayuda por lo que
+            primero se debe priorizar y canalizar ayuda hacia aquellas que
+            m&aacute;s necesitan.
+          </p>
 
-        <h1>¿C&oacute;mo interpretar la informaci&oacute;n?</h1>
-        <p>
-          In rhoncus condimentum lectus, ac ornare ante malesuada eget.
-          Vestibulum sollicitudin vulputate nibh, ut aliquet erat egestas eu.
-          Etiam ut quam semper libero interdum semper malesuada eu enim.
-          Pellentesque malesuada ipsum a commodo iaculis. Sed viverra
-          ullamcorper varius. Integer posuere, augue maximus condimentum
-          posuere, orci leo placerat nibh, sed fermentum arcu diam eu dui. Nulla
-          purus purus, dapibus sed nisi euismod, elementum consectetur nisl.
-          Nulla pulvinar eu orci at commodo. Fusce congue turpis molestie,
-          ultricies ipsum eget, vestibulum odio. Donec pellentesque sed enim ac
-          varius. Nulla aliquam mattis magna at tempus. Cras ac accumsan metus,
-          non cursus tortor.
-        </p>
-        <p>
-          Maecenas quis ex quis quam auctor convallis id a tortor. Praesent at
-          sapien id ante hendrerit varius sit amet non massa. Nunc sed porta
-          quam, nec vestibulum libero. Proin dictum turpis ante. Sed eleifend,
-          diam eu gravida tincidunt, purus erat blandit odio, quis viverra lacus
-          turpis ut dui. Praesent vel arcu a odio aliquam interdum non sit amet
-          felis. Curabitur a tellus nisi. Integer sit amet ullamcorper felis, ac
-          luctus enim. Integer eu facilisis tortor. Phasellus consequat dolor
-          iaculis felis vestibulum, vulputate scelerisque metus euismod.
-          Vestibulum pharetra arcu sit amet lectus convallis laoreet. Proin
-          dictum efficitur dui, in eleifend massa tincidunt ac. Vivamus ut
-          vehicula justo. Etiam quis dapibus tellus.
-        </p>
+          <ol>
+            <li>
+              Identificar los barrios donde las necesidades y vulnerabilidades
+              ya exist&iacute;an antes de la pandemia para permitir la
+              focalizaci&oacute;n de la ayuda en donde m&aacute;s se necesita.
+            </li>
+            <li>
+              Visibilizar y analizar si la ayuda de fuentes p&uacute;blicas y
+              privadas ha alcanzado prioritariamente a los barrios y familias
+              m&aacute;s necesitadas del municipio.
+            </li>
+          </ol>
+        </TextSwitch>
+
+        <TextSwitch title="&iquest;C&oacute;mo se identifican los barrios m&aacute;s vulnerables?">
+          <p>
+            El Priorizador utiliza distintas bases de datos de fuentes oficiales
+            del gobierno y de la sociedad civil que podr&iacute;an sugerir la
+            concentraci&oacute;n de mayores necesidades en ciertos barrios de un
+            municipio.
+          </p>
+          <p>
+            Entre mayor la superposici&oacute;n de variables que indican
+            vulnerabilidad en una zona, mayor la certeza de que se trata de un
+            barrio que necesita ser priorizado. Por ejemplo, la cantidad de
+            familias beneficiadas por el <u>Programa Tekopor&atilde;</u> en un
+            mismo barrio sugiere que ese espacio geogr&aacute;fico tiene
+            caracter&iacute;sticas diferentes a otros. Para reforzar la
+            hip&oacute;tesis de que ese barrio tiene m&aacute;s necesidades que
+            otros en t&eacute;rminos comparativos tambi&eacute;n se contabilizan
+            otras variables relacionadas como la cantidad de familias
+            beneficiadas por la <u>Tarifa Social de la ANDE</u>. Tanto
+            Tekopor&atilde; como la Tarifa Social son programas que se asignan
+            luego de comprobar que las familias realmente sufren cierto tipo de
+            vulnerabilidad o pobreza.
+          </p>
+          <p>
+            Se asume que aquellos barrios que ya ten&iacute;an muchas
+            necesidades, vulnerabilidades y pobreza antes de la pandemia,
+            habr&aacute;n empeorado desde su inicio.
+          </p>
+        </TextSwitch>
+
+        <TextSwitch title="&iquest;C&oacute;mo interpretar la informaci&oacute;n?">
+          <p>
+            La herramienta tiene datos para 4 municipios de Alto Paran&aacute;:
+            Ciudad del Este, Hernandarias, Presidente Franco y Minga
+            Guaz&uacute;. Se pueden activar o desactivar dos filtros, cuya
+            presentaci&oacute;n en el mapa es distinta.
+          </p>
+          <p>
+            Todas las variables sobre subsidios que indican necesidades se
+            exponen como mapas de calor: entre m&aacute;s oscuro el color, mayor
+            la concentraci&oacute;n y por ende mayor la necesidad.
+          </p>
+          <p>
+            Las variables de ayuda se presentan como puntos, permitiendo que se
+            superpongan al mapa de calor de necesidades.
+          </p>
+          <p>
+            Idealmente, los barrios de color m&aacute;s oscuro en el mapa (los
+            m&aacute;s necesitados) deber&iacute;an tener una mayor
+            concentraci&oacute;n de puntos por ayuda entregada. Esto
+            implicar&iacute;a que la ayuda se concentr&oacute; en donde
+            m&aacute;s se necesitaba. Por otro lado, si los puntos de ayuda se
+            concentran sobre &aacute;reas de color claro, esto
+            significar&iacute;a que los recursos no se focalizaron donde
+            hab&iacute;a mayor urgencia.
+          </p>
+        </TextSwitch>
+
+        <TextSwitch title="&iquest;Cu&aacute;les son los datos utilizados?">
+          <p> Necesidades: </p>
+          <ul>
+            <li>
+              Cantidad de beneficiarios del Programa Tekopor&atilde; por barrios
+              (2020).
+            </li>
+            <li>
+              Listado de beneficiarios de la Tarifa Social de la ANDE (2020).
+            </li>
+            <li>Mapeo de asentamientos - TECHO (2019). </li>
+            <li>
+              Instituciones Educativas que reciben Almuerzo Escolar MEC
+              (2015-2020).
+            </li>
+            <li>
+              Sem&aacute;foro de Eliminaci&oacute;n de la Pobreza -
+              Fundaci&oacute;n Paraguaya (2015).
+            </li>
+          </ul>
+
+          <p>Ayuda:</p>
+          <ul>
+            <li>
+              <a href="https://d-riveros-garcia.medium.com/pintar-la-ciudad-con-tu-ayuda-pintaconayuda-8c8656cd8e22">
+                Pint&aacute; con Ayuda
+              </a>{' '}
+              (2020).
+            </li>
+            <li>
+              Distribuci&oacute;n de cestas b&aacute;sicas - Municipalidad de
+              Ciudad del Este (2020).
+            </li>
+          </ul>
+        </TextSwitch>
+
+        <br></br>
+
+        <p>&Uacute;ltima actualizaci&oacute;n: 27/01/2021</p>
+
+        <br></br>
 
         <p>
-          M&aacute;s informaci&oacute;n&nbsp;
-          <a
-            href="https://d-riveros-garcia.medium.com/una-propuesta-para-que-la-ayuda-covid-19-llegue-a-tantas-familias-paraguayas-como-sea-posible-8adfe1101806"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            aqu&iacute;
+          M&aacute;s informaci&oacute;n sobre el origen de la herramienta en
+          este{' '}
+          <a href="https://d-riveros-garcia.medium.com/una-propuesta-para-que-la-ayuda-covid-19-llegue-a-tantas-familias-paraguayas-como-sea-posible-8adfe1101806">
+            {' '}
+            link{' '}
           </a>
+          .
         </p>
       </div>
     </>
