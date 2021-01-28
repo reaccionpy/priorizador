@@ -12,6 +12,7 @@ import localforage from 'localforage';
 import moment from 'moment';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import About from './components/About';
+import Analysis from './components/Analysis';
 
 const { Header, Content } = Layout;
 
@@ -39,7 +40,7 @@ const endpoints_dict = {
 const override = css`
   display: block;
   margin: 0 auto;
-  border-color: #3fa652eb;
+  border-color: #121e34;
   position: absolute;
   top: 50%;
   left: 45%;
@@ -73,6 +74,7 @@ function App() {
     const [koboEntries, setKoboEntries] = useState([]);
     const [cestasEntries, setCestasEntries] = useState([]);
     const [isLoadingDataset, setIsLoadingDataset] = useState(false);
+    const [availableLayers, setAvailableLayers] = useState([]);
 
     const handleLoadingDataset = isLoading => {
       var map = document.getElementById('map');
@@ -110,14 +112,41 @@ function App() {
       return () => (mounted = false);
     }, []);
 
-    // Now, the selector list has the elements of defaultSelectorList, without filter
     useEffect(() => {
       let mounted = true;
-      if (mounted) {
-        setSelectorList(defaultSelectorList);
+      fetch(
+        `${process.env.REACT_APP_API_URL}/get_available_layers?distrito=${district}`
+      )
+        .then(r => r.json())
+        .then(data => {
+          if (mounted) {
+            setAvailableLayers(data['layers']);
+          }
+        });
+      return () => (mounted = false);
+    }, [district, setAvailableLayers]);
+
+    useEffect(() => {
+      let mounted = true;
+
+      if (availableLayers.length > 0) {
+        if (mounted) {
+          setSelectorList(
+            defaultSelectorList.filter(item => {
+              if (availableLayers.indexOf(item.value) > -1) {
+                return true;
+              }
+              return false;
+            })
+          );
+
+          if (availableLayers.indexOf(colorBy) < 0) {
+            setColorBy(defaultSelectorList[0].value);
+          }
+        }
       }
       return () => (mounted = false);
-    }, [district, localities.features]);
+    }, [availableLayers, colorBy]);
 
     useEffect(() => {
       let mounted = true;
@@ -179,7 +208,7 @@ function App() {
         <PulseLoader
           css={override}
           size={50}
-          color={'#3fa652eb'}
+          color={'#121E34'}
           loading={isLoadingDataset}
         />
         <InformationPanel locality={currentLocality}></InformationPanel>
@@ -220,6 +249,9 @@ function App() {
             </Route>
             <Route path="/about">
               <About />
+            </Route>
+            <Route path="/analysis">
+              <Analysis />
             </Route>
           </Switch>
         </Router>

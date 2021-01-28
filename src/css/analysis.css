@@ -1,20 +1,20 @@
-.about-content {
+.content {
   margin: 30px;
   font-size: 1.4em;
 }
 
-.about-content h1 {
+.content h1 {
   text-align: center;
 }
 
 /* Responsive section */
 @media only screen and (max-width: 768px) {
-  .about-content p {
-    text-align: justify;
+  .content {
+    margin: 10px;
+    font-size: 1.4em;
   }
-
-  h2 {
-    font-size: 1.1em;
+  .content p {
+    text-align: justify;
   }
 }
 /* End of Responsive section */

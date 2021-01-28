@@ -61,7 +61,7 @@ export default function ColorScale(props) {
   useEffect(() => {
     switch (colorBy) {
       case 'tekopora':
-        setTopic('Cantidad de beneficiarios');
+        setTopic('Cant. de familias beneficiarias');
         break;
       case 'fundacion':
         setTopic('Cant. de familias en vulnerabilidad');

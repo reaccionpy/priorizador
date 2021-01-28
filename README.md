@@ -19,6 +19,9 @@ FUNDACION='1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo'
 CESTAS='1NSrEt9-z6LB0c1RlgXhbvsXbGWZEqJsfk05NAb94lhM'
 KOBO_API_TOKEN='XXXXCHANGEXXXX'
 ANDE_QUERY=SELECT "COORD_X", "COORD_Y" from "131e75f7-9073-46f6-9e49-f8673595dfc7" WHERE "DPTO" LIKE 'Alto Paran%' AND ("MUNICIPIO" LIKE 'CIUDAD DEL ESTE' OR "MUNICIPIO" LIKE 'HERNANDARIAS' OR "MUNICIPIO" LIKE 'MINGA GUAZU' OR "MUNICIPIO" LIKE 'PRESIDENTE FRANCO')
+DASH_DEBUG_MODE=False
+REACT_APP_DASH_URL='http://localhost:8050'
+REDIS_SERVER=redis
 
 ```
 
@@ -33,6 +36,9 @@ FUNDACION='1TnF5CaBj8EQLa8JbNMVnxYMP6W2YGG56mVDg6PeabLo'
 CESTAS='1NSrEt9-z6LB0c1RlgXhbvsXbGWZEqJsfk05NAb94lhM'
 KOBO_API_TOKEN='XXXXCHANGEXXXX'
 ANDE_QUERY=SELECT "COORD_X", "COORD_Y" from "131e75f7-9073-46f6-9e49-f8673595dfc7" WHERE "DPTO" LIKE 'Alto Paran%' AND ("MUNICIPIO" LIKE 'CIUDAD DEL ESTE' OR "MUNICIPIO" LIKE 'HERNANDARIAS' OR "MUNICIPIO" LIKE 'MINGA GUAZU' OR "MUNICIPIO" LIKE 'PRESIDENTE FRANCO')
+DASH_DEBUG_MODE=False
+REACT_APP_DASH_URL='http://localhost:8050'
+REDIS_SERVER=redis
 
 ```
 
@@ -54,6 +60,22 @@ CESTAS='1NSrEt9-z6LB0c1RlgXhbvsXbGWZEqJsfk05NAb94lhM'
 KOBO_API_TOKEN='XXXXCHANGEXXXX'
 ANDE_QUERY=SELECT "COORD_X", "COORD_Y" from "131e75f7-9073-46f6-9e49-f8673595dfc7" WHERE "DPTO" LIKE 'Alto Paran%' AND ("MUNICIPIO" LIKE 'CIUDAD DEL ESTE' OR "MUNICIPIO" LIKE 'HERNANDARIAS' OR "MUNICIPIO" LIKE 'MINGA GUAZU' OR "MUNICIPIO" LIKE 'PRESIDENTE FRANCO')
 
+```
+
+For Dash App:
+
+```bash
+cd priorizador/visualizations_dash
+touch .env
+
+```
+
+.env content
+
+```bash
+REACT_APP_API_URL='http://localhost:5000/reaccion'
+DASH_DEBUG_MODE=True
+REDIS_SERVER=localhost
 ```
 
 ## Running the frontend locally
@@ -113,8 +135,54 @@ Finally to run the tests use the following command and everything should be gree
 
 `pytest`
 
-Create a folder named _geojson_data_ and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script.
+Create a folder named _geojson_data_ and download the geojson file available [here](http://geo.stp.gov.py/u/dgeec/tables/dgeec.paraguay_2012_barrrios_y_localidades/public/map) in it, then execute the script with the virtual environment activated.
 `python geojson_api.py`
+
+## Running the Dash App locally
+
+For Python=3.7
+It is necessary [Redis](https://redis.io/topics/quickstart) and to run the API.
+
+Redirect yourself to the visualizations_dash folder and create an env folder
+
+```bash
+cd visualizations_dash/ && mkdir env
+
+```
+
+Then, create the virtual environment and install the requirements
+
+```bash
+python -m venv env && pip install -r requirements.txt
+
+```
+
+Execute:
+
+```bash
+. env/bin/activate
+python dash_main.py
+
+```
+
+It is possible to pre-calculate the data periodically at the time specified in dash_main.py (celery.conf.beat_schedule dictionary).
+To do it:
+
+Run the Celery Worker:
+
+```bash
+. env/bin/activate
+celery -A dash_main.celery worker --loglevel=info
+
+```
+
+Run the Celery Beat scheduler:
+
+```bash
+. env/bin/activate
+celery -A dash_main.celery beat --loglevel=info
+
+```
 
 ### Deploy with docker-compose
 

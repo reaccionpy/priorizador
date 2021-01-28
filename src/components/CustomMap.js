@@ -211,7 +211,7 @@ export default function CustomMap(props) {
               />
             </div>
             <div className="filter-container">
-              <FontAwesomeIcon icon={faDrawPolygon} /> Subsidio &nbsp;
+              <FontAwesomeIcon icon={faDrawPolygon} /> Necesidad &nbsp;
               <input
                 type="checkbox"
                 checked={showSubsidio}

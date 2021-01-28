@@ -82,36 +82,22 @@ CORS(app)
 def healthcheck():
     return Response(response="Healthy\n", status=200, mimetype="text/plain")
 
+@app.route("/reaccion/get_available_layers", methods=["GET"])
+def get_available_layers():
+    districts_layers = {
+        'CIUDAD DEL ESTE': ['tekopora','almuerzo','fundacion','techo','ande'],
+        'HERNANDARIAS': ['tekopora','ande'],
+        'MINGA GUAZU': ['tekopora','ande'],
+        'PRESIDENTE FRANCO': ['tekopora','fundacion','techo','ande']
+    }
 
-# route for face detection service
-# @app.route("/reaccion/get_json", methods=["GET"])
-# @swag_from("./api-docs/get_json.yml")
-# def get_json():
-#     """Getting geojson for specific region"""
-#     dep = request.args.get("departamento")
-#     distritos = ["01", "02", "05", "11"]
-#     if dep is None:
-#         dep = "10"
-#     tekopora_df = google_sheets_to_df(tekopora_key)
-#     techo_df = google_sheets_to_df(techo_key)
-#     almuerzo_df = google_sheets_to_df(almuerzo_key)
-#     fundacion_df = google_sheets_to_df(fundacion_key)
-#     with open(GEOJSON_PATH, "r", encoding="utf8") as f:
-#         shape = json.load(f)
-#         feature_dict = {
-#             f["properties"]["objectid"]: f
-#             for f in shape["features"]
-#             if f["properties"]["dpto"] == dep
-#             and f["properties"]["distrito"] in distritos
-#         }
-#         features = add_properties_tekopora(feature_dict, tekopora_df)
-#         features = add_properties_techo(features, techo_df)
-#         features = add_properties_fundacion(features, fundacion_df)
-#         features = add_properties_almuerzo(features, almuerzo_df)
-#         shape["features"] = features
-#         response_pickled = json.dumps(shape)
-#     return Response(response=response_pickled, status=200, mimetype="application/json")
+    district_arg = request.args.get("distrito")
+    if district_arg is None:
+        district_arg = "CIUDAD DEL ESTE"
 
+    available_layers = {'layers': districts_layers[district_arg]}
+
+    return available_layers
 
 @app.route("/reaccion/get_tekopora_layer", methods=["GET"])
 def get_tekopora_layer():
