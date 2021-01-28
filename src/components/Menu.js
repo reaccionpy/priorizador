@@ -1,7 +1,11 @@
 import React from 'react';
 import '../css/menu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faMap } from '@fortawesome/free-solid-svg-icons';
+import {
+  faInfoCircle,
+  faMap,
+  faChartBar
+} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 export default function Menu(props) {
@@ -35,6 +39,18 @@ export default function Menu(props) {
               <div className="menu-option-desc">Mapa</div>
             </div>
           </Link>
+          <Link
+            className="menu-link"
+            to="/analysis"
+            onClick={() => props.setShowMenu(!props.showMenu)}
+          >
+            <div className="menu-option">
+              <div className="menu-option-icon">
+                <FontAwesomeIcon icon={faChartBar} />
+              </div>
+              <div className="menu-option-desc">An&aacute;lisis</div>
+            </div>
+          </Link>
         </div>
       )}
       {!props.isDesktop && (
@@ -52,6 +68,13 @@ export default function Menu(props) {
             onClick={() => props.setShowMenu(!props.showMenu)}
           >
             <div className="menu-option"> Mapa </div>
+          </Link>
+          <Link
+            className="menu-link"
+            to="/analysis"
+            onClick={() => props.setShowMenu(!props.showMenu)}
+          >
+            <div className="menu-option"> An&aacute;lisis </div>
           </Link>
         </div>
       )}

@@ -18,14 +18,65 @@ services:
       - FUNDACION
       - KOBO_API_TOKEN
       - CESTAS
-      - ANDE_PATH
       - ANDE_QUERY
+
+  redis:
+    image: redis
+    networks:
+      - network
+
+  celery-worker:
+    build:
+      context: ./visualizations_dash
+      dockerfile: Dockerfile.Celery
+    image: celery-worker
+    entrypoint: celery
+    command: -A dash_main.celery worker --loglevel=info
+    depends_on:
+      - redis
+      - flask-api
+    networks:
+      - network
+    environment:
+      - REACT_APP_API_URL=http://python-svc:5000/reaccion
+      - REDIS_SERVER
+
+  celery-beat:
+    build:
+      context: ./visualizations_dash
+      dockerfile: Dockerfile.Celery
+    image: celery-beat
+    entrypoint: celery
+    command: -A dash_main.celery beat --loglevel=info
+    depends_on:
+    - celery-worker
+    - redis
+    networks:
+      - network
+    environment:
+      - REDIS_SERVER
+
+  dash:
+    build: ./visualizations_dash
+    image: dash
+    ports:
+      - '8050:8050'
+    depends_on:
+      - redis
+      - flask-api
+    networks:
+      - network
+    environment:
+      - REACT_APP_API_URL=http://python-svc:5000/reaccion
+      - DASH_DEBUG_MODE
+      - REDIS_SERVER
 
   priorizador:
     build:
       context: ./
       args:
         REACT_APP_API_URL: ${REACT_APP_API_URL}
+        REACT_APP_DASH_URL: ${REACT_APP_DASH_URL}
     image: priorizador
     ports:
       - '8080:8080'
