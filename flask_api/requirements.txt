@@ -30,7 +30,7 @@ Shapely==1.7.0
 six==1.14.0
 toml==0.10.0
 typed-ast==1.4.1
-urllib3==1.26.4
+urllib3==1.26.5
 utm==0.6.0
 Werkzeug==1.0.1
 zipp==3.1.0
